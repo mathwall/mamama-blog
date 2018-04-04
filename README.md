@@ -1,6 +1,5 @@
 **RUSH MVC**  
   
-  
 **Authors:**  
 Mathilde Wallon  
 Marie Parison  
@@ -24,6 +23,14 @@ _Dans le shell_
     ./composer.phar install
     
     
+**Lancer un serveur php**  
+- Soit par Apache2 => simulation prod, la racine doit se trouver dans le repertoire de CE fichier
+- Soit on monte un serveur spontane, par le binaire php : 
+        
+       php -S localhost:8000 -d xdebug.remote_enable=1 -d display_errors=1
+Cette commande est a taper dans le repertoire de ce fichier)  
+le drapeau xdebug.remove_enable=1 active le debugueur.
+    
 **Convention sur le code**  
 A definir, mais on va essayer d'ecrire proprement :)
 
@@ -36,7 +43,9 @@ Une fois le feature valide, on merge avec le master et on recree une nouvelle br
 
 
 **Git Precaution**  
+- Essayer au maximum de commit uniquement les lignes qui concernent le commit!
+- Nom des commits comprehensible !
 - Ne pas faire "git add *" ! :)  
 - git add -u   ==> pour indexer les fichiers deja suivis  
 - Toujours faire des "git status" avant de commit ! 
-- On verra
+- On verra pour le reste
