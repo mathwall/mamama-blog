@@ -8,4 +8,4 @@ composer.lock
 vendor/
 
 # public folder
-WebRoot/
+#WebRoot/
