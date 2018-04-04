@@ -1,0 +1,11 @@
+# IDE folder
+.idea/
+.vscode/
+
+# PHP composer
+composer.phar
+composer.lock
+vendor/
+
+# public folder
+WebRoot/
