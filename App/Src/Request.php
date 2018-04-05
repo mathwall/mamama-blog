@@ -15,8 +15,7 @@ class Request {
     }
 
     function setParams($params){
-
-        $this->params;
+        $this->params = $params;
     }
 
     function getParams(){

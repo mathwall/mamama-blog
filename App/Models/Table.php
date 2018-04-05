@@ -18,13 +18,13 @@ abstract class Table {
         foreach ($fields as $key => $value) {
             $keys[] = $key;
             $values[] = "?";
-            $params[] = $params;
+            $params[] = $value;
         }
 
         $keys = implode(",", $keys);
         $values = implode(",", $values);
 
-        return $this->query("INSERT INTO" . $this->table . "($keys) VALUES($values) ", $params);
+        return $this->query("INSERT INTO " . $this->table . "($keys) VALUES($values) ", $params);
     }
 
     public function getById($id) {

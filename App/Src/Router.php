@@ -9,7 +9,7 @@ class Router
 {
     //TODO créer constantes rights
     const RULES  = array(
-        "{articles/edit/(?P<id>\d+)}" => ["ArticlesController::editAction", 2],
+        "{articles/edit/(?P<id>\d+)/?}" => ["ArticlesController::editAction", 2],
         "{articles/(?P<id>\d+)}" => ["ArticlesController::render", 0],
         "{articles}" => ["ArticlesController::render", 0],
         "{}" => ["ArticlesController::render", 0],
@@ -20,6 +20,7 @@ class Router
         foreach(self::RULES as $pattern => $method){
             if(preg_match($pattern, $request->getUrl(), $params)){
                 $request->setParams($params);
+                $method[0] = "App\\Controllers\\" . $method[0];
                 return $method;
             }
         }

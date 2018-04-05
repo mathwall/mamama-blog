@@ -1,7 +1,6 @@
 <?php
 
 use App\Dispatcher;
-use App\Src\Router;
 use App\Src\Request;
 
 // __ROOT_DIR__ est une constante qui va representer la racine du projet
