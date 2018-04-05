@@ -10,10 +10,7 @@ define("__ROOT_DIR__", __DIR__ . "/../");
 // Chargement des autoloads
 require_once __ROOT_DIR__ . '/vendor/autoload.php';
 
-Router::test();
-
 $request = new Request();
 Dispatcher::redirect($request);
 
 die("Tout a faire ici");
-
