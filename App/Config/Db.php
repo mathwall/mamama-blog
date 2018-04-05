@@ -2,14 +2,17 @@
 
 namespace App\Config;
 
+use Configuration;
+use PDO;
+
 class Db {
     private static $_pdo = null;
 
     public static function getDb()
     {
-        if (is_null(self::$_pdo)) {
+        if (self::$_pdo === null) {
             try {
-                self::$_pdo = new PDO('mysql:dbname=' . Configuration::DBNAME . ';host=' . Configuration::HOST, Configuration::USER, Configuration::MDP);
+                self::$_pdo = new PDO('mysql:dbname=' . Configuration::DB_NAME . ';host=' . Configuration::DB_HOST . ';port=' . Configuration::DB_PORT, Configuration::DB_NAME, Configuration::DB_PASSWORD);
             } catch (PDOException $e) {
                 die("PDO ERROR: " . $e->getMessage());
             }
@@ -17,20 +20,45 @@ class Db {
         return self::$_pdo;
     }
 
-    public static function query($query, $params = null, $fetchall = true)
-    {
+    static function query($sql, $params = NULL, $if_one = false){
         $pdo = self::getDb();
-        if ($params == null) {
-            $prepared = $pdo->query($query);
-        } else {
-            $prepared = $pdo->prepare($query);
-            $prepared->execute($params);
+        try {
+            if ($params) {
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute($params);
+            } else {
+                $stmt = $pdo->query($sql);
+            }
+
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+            if( strpos($sql, "INSERT") === 0 ||
+                strpos($sql, "UPDATE") === 0 ||
+                strpos($sql, "MODIFY") === 0
+            ) {
+                if($stmt->rowCount() > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            if ($if_one)
+                return $stmt->fetch();
+            else
+                return $stmt->fetchAll();
+        } catch (Exception $exception) {
+            die("PDO Error: " . $exception->getMessage());
         }
-        if ($fetchall == true) {
-            $result = $prepared->fetchAll(PDO::FETCH_ASSOC);
-        } else {
-            $result = $prepared->fetch(PDO::FETCH_ASSOC);
-        }
-        return $result;
+    }
+
+    /**
+     * Retourne l'identifiant de la dernière ligne insérée ou la valeur d'une séquence
+     * @param null $name
+     * @return string
+     */
+    static public function getLastInsertId($name = null)
+    {
+        return self::getDb()->lastInsertId($name);
     }
 }
