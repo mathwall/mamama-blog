@@ -1,7 +1,8 @@
 <?php
-require_once 'Configuration.php';
-class Db
-{
+
+namespace App\Config;
+
+class Db {
     private static $_pdo = null;
 
     public static function getDb()
@@ -32,5 +33,4 @@ class Db
         }
         return $result;
     }
-
 }

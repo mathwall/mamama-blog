@@ -22,6 +22,12 @@ _Dans le shell_
 
     ./composer.phar install
     
+
+**Mettre a jour l'autoload**  
+_Dans le shell_
+
+    ./composer.phar dump-autoload
+    
     
 **Lancer un serveur php**  
 - Soit par Apache2 => simulation prod, la racine doit se trouver dans le repertoire de CE fichier
