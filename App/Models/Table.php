@@ -31,6 +31,20 @@ abstract class Table {
         return $this->query("SELECT * FROM " . $this->table . " WHERE id = {$id}", null, true);
     }
 
+    public function getByParams($fields, $ifOne = false) {
+        $modif_params = [];
+        $params = [];
+        foreach ($fields as $key => $value) {
+            if ($value) {
+                $modif_params[] = "$key = ?";
+                $params[] = $value;
+            }
+        }
+        $modif_params = implode(",", $modif_params);
+
+        return $this->query("SELECT * FROM " . $this->table . " WHERE $modif_params", $params, $ifOne);
+    }
+
     public function getAll($orderBy = null, $direction = "ASC") {
         $strOrderBy = $this->strOrderBy($orderBy, $direction);
         return $this->query("SELECT * FROM " . $this->table . " $strOrderBy");

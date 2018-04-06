@@ -27,9 +27,19 @@ class User {
         }
     }
 
-    public function login($id) {
+    public function login($email = null, $id = null) {
         $userModel = new UsersTable();
-        $userData = $userModel->getById($id);
+
+        if($email) {
+            $userData = $userModel->getByParams([
+                "email" => $email,
+            ], true);
+        } else if($id) {
+            $userData = $userModel->getById($id, null, true);
+        } else {
+            return;
+        }
+
         if(count($userData) > 0) {
             Session::write("Auth.User.username", $userData["username"]);
             Session::write("Auth.User.email", $userData["email"]);
