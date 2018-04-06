@@ -6,9 +6,19 @@ use App\Models\ArticlesTable;
 use App\Models\CommentsTable;
 use App\Models\UsersTable;
 use App\Src\Request;
+use App\Controllers\CategoriesController;
+
+//TODO récupérer $error
 
 class ArticlesController extends Controller
 {
+
+    private static function searchBar(){
+
+        $search = [];
+        CategoriesController::searchCategory($search);
+        return $search;
+    }
 
     public static function displayAllAction(Request $request)
     {
@@ -23,7 +33,8 @@ class ArticlesController extends Controller
                 $articles[$key]['creation_date'] = parent::dateFormat($article['creation_date']);
             }
         }
-        parent::render('/Articles/articles.html.twig', ["articles" => $articles]);
+        
+        parent::render('/Articles/articles.html.twig', ["articles" => $articles, "search" => self::searchBar()]);
     }
 
     public static function displayAction(Request $request)

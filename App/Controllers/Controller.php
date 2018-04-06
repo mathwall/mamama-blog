@@ -12,19 +12,20 @@ abstract class Controller
         return class_exists($modelObj) ? new $modelObj : false;
     }
 
-    public static function beforeRender($array)
-    {
-        foreach ($array as $key => $value) {
+    static public function beforeRender($array){
+
+        foreach($array as $key => $value){
             $array[$key] = nl2br(htmlspecialchars($value));
         }
         return $array;
     }
+    
     public static function dateFormat($string)
     {
         return substr($string, 0, 10);
     }
-    public static function render($file, $params = [])
-    {
+    
+    static public function render($file, $params = []) {
         TwigLoader::render($file, $params);
     }
 }
