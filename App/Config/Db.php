@@ -11,7 +11,7 @@ class Db {
     {
         if (self::$_pdo === null) {
             try {
-                self::$_pdo = new PDO('mysql:dbname=' . Configuration::DB_NAME . ';host=' . Configuration::DB_HOST . ';port=' . Configuration::DB_PORT, Configuration::DB_USER, Configuration::DB_PASSWORD);
+                self::$_pdo = new PDO('mysql:dbname=' . Configuration::DB_NAME . ';host=' . Configuration::DB_HOST . ';port=' . Configuration::DB_PORT . ";charset=UTF8", Configuration::DB_USER, Configuration::DB_PASSWORD);
             } catch (PDOException $e) {
                 die("PDO ERROR: " . $e->getMessage());
             }

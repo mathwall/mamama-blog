@@ -24,8 +24,8 @@ class ArticlesTable extends Table
     public function getShortAll()
     {
         $all = self::getAll();
-        foreach($all as $key => $article) {
-            $all[$key]['content'] = self::getShorterContent($article['content'], 10);
+        foreach ($all as $key => $article) {
+            $all[$key]['content'] = self::getShorterContent($article['content'], 50);
         }
         return $all;
     }
@@ -33,15 +33,19 @@ class ArticlesTable extends Table
     {
         $length = $nb_car;
         if ($nb_car < strlen($content)) {
-            while (($content{$length} != " ") && ($length > 0)) {
-                $length--;
-            }
-            if ($length == 0) {return substr($content, 0, $nb_car) . "...";
-            } else {
-                return substr($content, 0, $length) . "...";
-            }
+            $last_space = strrpos(substr($content, 0, $nb_car), ' ');
+            return substr($content, 0, $last_space) . "...";
         } else {
             return $content;
         }
+    }
+    public function getById($id)
+    {
+        $article = parent::getById($id);
+        $user = new UsersTable();
+        $category = new CategoriesTable();
+        $article['author'] = $user->getNamebyId($article['id_writer']);
+        $article['category'] = $category->getNamebyId($article['id_category']);
+        return $article;
     }
 }
