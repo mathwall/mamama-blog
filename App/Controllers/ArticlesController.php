@@ -13,7 +13,7 @@ class ArticlesController extends Controller
     {
         $article_table = new ArticlesTable();
         $articles = $article_table->getShortAll();
-        if (!$article) {
+        if (!$articles) {
             $error = "No articles found";
         } else {
             foreach ($articles as $key => $article) {
@@ -24,12 +24,7 @@ class ArticlesController extends Controller
                 $articles[$key]['category'] = htmlspecialchars($article['category']);
             }
         }
-        //// RETURN SOUS FORMAT TWIIIIIIG
-        try {
-            echo $twig->render('Views/Articles/articles.html.twig', array("articles" => $articles));
-        } catch (Exception $exception) {
-            die("Page non trouvee");
-        }
+        parent::render('/Articles/articles.html.twig', ["articles" => $articles]);
     }
 
     public static function displayAction(Request $request)
