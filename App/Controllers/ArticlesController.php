@@ -11,20 +11,25 @@ class ArticlesController extends Controller
 
     public static function displayAllAction(Request $request)
     {
-        $article = new ArticlesTable();
-        $articles_list = $article->getShortAll();
-        if (!$articles_list) {
+        $article_table = new ArticlesTable();
+        $articles = $article_table->getShortAll();
+        if (!$article) {
             $error = "No articles found";
         } else {
-            foreach ($articles_list as $key => $article) {
-                $articles_list[$key]['content'] = nl2br(htmlspecialchars($article['content']));
-                $articles_list[$key]['title'] = nl2br(htmlspecialchars($article['title']));
-                $articles_list[$key]['path_image'] = htmlspecialchars($article['path_image']);
-                $articles_list[$key]['author'] = htmlspecialchars($article['author']);
-                $articles_list[$key]['category'] = htmlspecialchars($article['category']);            
+            foreach ($articles as $key => $article) {
+                $articles[$key]['content'] = nl2br(htmlspecialchars($article['content']));
+                $articles[$key]['title'] = nl2br(htmlspecialchars($article['title']));
+                $articles[$key]['path_image'] = htmlspecialchars($article['path_image']);
+                $articles[$key]['author'] = htmlspecialchars($article['author']);
+                $articles[$key]['category'] = htmlspecialchars($article['category']);
             }
         }
-        return $articles_list;
+        //// RETURN SOUS FORMAT TWIIIIIIG
+        try {
+            echo $twig->render('Views/Articles/articles.html.twig', array("articles" => $articles));
+        } catch (Exception $exception) {
+            die("Page non trouvee");
+        }
     }
 
     public static function displayAction(Request $request)
