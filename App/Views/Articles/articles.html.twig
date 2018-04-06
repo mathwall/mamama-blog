@@ -1,10 +1,9 @@
-{% extends "base.html.twig" %}
+{% extends "/Articles/base.html.twig" %}
 
 {% block head %}
 
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <title>Blog Mamama - {{article.display}}</title>
+  <title>Blog Mamama </title>
+  <link href="css/articles.css" rel="stylesheet">
 
 {% endblock %}
 
@@ -22,15 +21,15 @@
           {% for article in articles %}
           <!-- Blog Post -->
           <div class="card mb-4">
-            <img class="card-img-top" src={{ '"' ~ article.path_image ~ '"' }} alt="">
+            <img class="card-img-top" src={{article.path_image}} alt="">
             <div class="card-body">
               <h2 class="card-title">{{ article.title }}</h2>
               <p class="card-text">{{ article.content }}</p>
-              <a href={{ '"/article/' ~ article.id ~ '"' }} class="btn btn-primary">Read More &rarr;</a>
+              <a href={{ '/articles/' ~ article.id}} class="btn btn-primary">Read More &rarr;</a>
             </div>
             <div class="card-footer text-muted">
               Posted on {{ article.created_date }}, 2017 by {{ article.author }}
-              <button id="comments">{{ article.nb_comments}}</button>
+              <button id="comments">{{ article.nb_comments }}</button>
             </div>
           </div>
           {% endfor %}
