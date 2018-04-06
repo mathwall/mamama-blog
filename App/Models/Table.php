@@ -7,7 +7,7 @@ use App\Config\Db;
 abstract class Table {
     protected $table = "";
 
-    function query(...$params){
+    protected function query(...$params){
         return DB::query(...$params);
     }
 
@@ -34,7 +34,6 @@ abstract class Table {
     public function getAll($orderBy = null, $direction = "ASC") {
         $strOrderBy = $this->strOrderBy($orderBy, $direction);
         return $this->query("SELECT * FROM " . $this->table . " $strOrderBy");
-
     }
 
     protected function strOrderBy($orderBy = null, $direction = "ASC", $table_prefix = null) {
