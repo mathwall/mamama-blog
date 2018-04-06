@@ -9,6 +9,5 @@ class Configuration {
     const DB_PASSWORD = "";
     const DB_NAME = "php_rush_mvc";
 
-
     const TWIG_ROOT_PATH = __ROOT_DIR__ . "/App/Views/";
 }

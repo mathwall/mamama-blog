@@ -11,17 +11,22 @@ class Dispatcher
     {
         $tab = Router::match($request);
 
-        if (!is_callable($tab[0])) {
-            // TODO
-            die("Merde ! Steven nous a encore hacké !");
+        if(!$tab) {
+            // TODO 404
+            die("Page 404");
         } else {
-//            if (Session::read('group') >= $tab[1]) {
-            //TODO
-            if (3 >= $tab[1]) {
-                $tab[0]($request);
+            if (!is_callable($tab[0])) {
+                // TODO Steven
+                die("Merde ! Steven nous a encore hacké !");
             } else {
-                //TODO
-                die("Pas les droits");
+//            if (Session::read('group') >= $tab[1]) {
+                //TODO session read group
+                if (3 >= $tab[1]) {
+                    $tab[0]($request);
+                } else {
+                    //TODO pas les droits
+                    die("Pas les droits");
+                }
             }
         }
     }
