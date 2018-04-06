@@ -4,6 +4,8 @@ namespace App;
 
 use App\Src\Router;
 use App\Src\Request;
+use App\Src\User;
+
 
 class Dispatcher
 {
@@ -21,7 +23,7 @@ class Dispatcher
             } else {
 //            if (Session::read('group') >= $tab[1]) {
                 //TODO session read group
-                if (3 >= $tab[1]) {
+                if (User::getInstance()->getRight() >= $tab[1]) {
                     $tab[0]($request);
                 } else {
                     //TODO pas les droits
