@@ -31,7 +31,6 @@ class ArticlesController extends Controller
             $error = "No articles found";
         } else {
             foreach ($articles as $key => $article) {
-                $articles[$key] = parent::beforeRender($articles[$key]);
                 $articles[$key]['path_image'] = "/img/" . $article['path_image'];
                 $articles[$key]['creation_date'] = parent::dateFormat($article['creation_date']);
             }
@@ -40,9 +39,6 @@ class ArticlesController extends Controller
         // Recuperation des categories en passant par le MODEL
         $categories_models = new CategoriesTable();
         $categories = $categories_models->getByDesc();
-        foreach ($categories as $key => $category) {
-            $categories[$key] = parent::beforeRender($category);
-        }
 
         parent::render('/Articles/articles.html.twig', [
             "articles" => $articles,
@@ -66,12 +62,10 @@ class ArticlesController extends Controller
         $article = $article_table->getById($id);
         // Il faut gerer si l'id fourni dans le url n'existe pas
         if($article) {
-            $article = parent::beforeRender($article);
             $article['path_image'] = "/img/" . $article['path_image'];
             $article['creation_date'] = parent::dateFormat($article['creation_date']);
             $comments = $comments_table->getByArticleId($article['id']);
             foreach($comments as $key => $comment) {
-                $comments[$key] = parent::beforeRender($comments[$key]);
                 $comments[$key]['creation_date'] = parent::dateFormat($comment['creation_date']);
             }
             parent::render('/Articles/article.html.twig', ["article" => $article, "comments" => $comments]);
