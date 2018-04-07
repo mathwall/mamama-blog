@@ -6,9 +6,8 @@ use App\Models\ArticlesTable;
 use App\Models\CategoriesTable;
 use App\Models\TagsTable;
 use App\Models\CommentsTable;
-use App\Models\UsersTable;
-use App\Src\User;
 use App\Src\Request;
+use App\Src\User;
 
 //TODO récupérer $error
 
@@ -30,7 +29,7 @@ class ArticlesController extends Controller
             $error = "No articles found";
         } else {
             foreach ($articles as $key => $article) {
-                $articles[$key]['path_image'] = "/img/" . $article['path_image'];
+                $articles[$key]['path_image'] = "/media/" . $article['path_image'];
                 $articles[$key]['creation_date'] = parent::dateFormat($article['creation_date']);
             }
         }
@@ -63,7 +62,7 @@ class ArticlesController extends Controller
         $id = $request->getParams()["id"];
         $article_table = new ArticlesTable();
         $comments_table = new CommentsTable();
-        $request = new Request();
+        // $request = new Request();
         $article = $article_table->getById($id);
         if ($article) {
             if ($request->getMethod() == "POST") {
@@ -74,7 +73,7 @@ class ArticlesController extends Controller
                 $new_comment['creation_date'] = date("Y-m-d H:i:s");
                 $comments_table->create($new_comment);
             }
-            $article['path_image'] = "/img/" . $article['path_image'];
+            $article['path_image'] = "/media/" . $article['path_image'];
             $article['creation_date'] = parent::dateFormat($article['creation_date']);
             $comments = $comments_table->getByArticleId($article['id']);
             foreach ($comments as $key => $comment) {
@@ -89,20 +88,36 @@ class ArticlesController extends Controller
 
     public static function createAction(Request $request)
     {
+        $article_table = new ArticlesTable();
+        $categories_table = new CategoriesTable();
         if ($request->getMethod() == "POST") {
-
+            $new_article = $request->getMethodParams();
+            $new_article['id_writer'] = User::getInstance()->getId();
+            $new_article['creation_date'] = date("Y-m-d H:i:s");
+            $article_table->create($new_article);
         }
-        parent::render('/Articles/article_edit.html.twig', []);
+        // renvoyer la liste des catégories sous forme de tableau
+        $categories = $categories_table->getAll();
+        //renvoyer un tableau edit qui indique qu'on est en mode "create"
+        $edit = [];
+        $edit['status'] = "Create";
+        $edit['title'] = "";
+        $edit['content'] = "";
+        parent::render('/Articles/create.html.twig', ["edit" => $edit, "categories" => $categories]);
     }
 
     public static function editAction(Request $request)
     {
-        // TODO Ceci est un exemple,
-        // A adapter selon l'action
-        $model = new UsersTable();
-        $params = $request->getParams();
-        parent::render("edit.html.twig", [
-            "id" => $params["id"],
-        ]);
+        $id = $request->getParams()["id"];
+        $article_table = new ArticlesTable();
+        $categories_table = new CategoriesTable();
+        if ($request->getMethod() == "POST") {
+            $edit_article = $request->getMethodParams();
+            $edit_article['edition_date'] = date("Y-m-d H:i:s");
+            $article_table->modifyById($id, $edit_article);
+        }
+        $article = $article_table->getById($id);
+        $categories = $categories_table->getAll();
+        parent::render('/Articles/edit.html.twig', ["article" => $article, "categories" => $categories]);
     }
 }

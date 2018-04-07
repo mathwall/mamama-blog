@@ -1,0 +1,10 @@
+{% extends "/Articles/base.html.twig" %} 
+
+{% block head %}
+<title> Create article </title>
+<link href="/css/articles.css" rel="stylesheet">
+{% endblock %} 
+
+{% block section %}
+{% include '/Articles/form.html.twig' with {'title' : 'Edit'} %}
+{% endblock %}

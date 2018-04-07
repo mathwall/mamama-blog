@@ -30,10 +30,9 @@ class CategoriesTable extends Table
         $result = parent::query("SELECT * FROM $this->table WHERE parent_id = {$parent_id}", [$parent_id]);
 
         if(!empty($result)){
-
             foreach($result as $children){
                 $categories[] = $children;
-                self::getChildren($categories, $result[$children]["id"]);
+                self::getChildren($categories, $children["id"]);
             }
         }
     }

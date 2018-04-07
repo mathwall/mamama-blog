@@ -76,11 +76,11 @@ abstract class Table
         }
         $modif_params = implode(",", $modif_params);
         $params[] = $id;
-        return $this->query("UPDATE " . static::$table . " SET $modif_params WHERE id = ?", $params);
+        return $this->query("UPDATE " . $this->table . " SET $modif_params WHERE id = ?", $params);
     }
 
     public function deleteById($id)
     {
-        return $this->query("DELETE FROM " . static::$table . " WHERE id = ?", [$id]);
+        return $this->query("DELETE FROM " . $this->table . " WHERE id = ?", [$id]);
     }
 }
