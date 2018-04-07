@@ -4,12 +4,11 @@ namespace App\Controllers;
 
 use App\Models\ArticlesTable;
 use App\Models\CategoriesTable;
+use App\Models\TagsTable;
 use App\Models\CommentsTable;
 use App\Models\UsersTable;
 use App\Src\User;
 use App\Src\Request;
-
-//use App\Controllers\CategoriesController;
 
 //TODO récupérer $error
 
@@ -18,7 +17,14 @@ class ArticlesController extends Controller
     public static function displayAllAction(Request $request)
     {
         $article_table = new ArticlesTable();
-        $articles = $article_table->getShortAll();
+        $post = $request->getMethodParams();
+
+        if(!empty($post)){
+            $articles = $article_table->getFiltered($post);
+        } else {
+            $articles = $article_table->getShortAll();
+        }
+        
         if (!$articles) {
             $error = "No articles found";
         } else {
@@ -31,12 +37,31 @@ class ArticlesController extends Controller
         // Recuperation des categories en passant par le MODEL
         $categories_models = new CategoriesTable();
         $categories = $categories_models->getByDesc();
+        foreach ($categories as $key => $category) {
+            $categories[$key] = parent::beforeRender($category);
+        }
+
+        $tags_models = new TagsTable();
+        $tags = $tags_models->getAll();
+        foreach ($tags as $key => $tag) {
+            $tags[$key] = parent::beforeRender($tag);
+        }
 
         parent::render('/Articles/articles.html.twig', [
             "articles" => $articles,
-            "search" => ["categories" => $categories],
+            "search" => ["categories" => $categories, "tags" => $tags]
         ]);
-    }
+}
+
+    /* POUR MATHILDE
+
+        $tags_models = new TagsTable();
+        $tags = $tags_models->getByArticleId(1);
+        foreach ($tags as $key => $tag) {
+            $tags[$key] = parent::beforeRender($tag);
+        }
+
+    */
 
     public static function displayAction(Request $request)
     {

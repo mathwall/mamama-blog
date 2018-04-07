@@ -16,6 +16,7 @@ class UsersTable extends Table
             "creation_date" => date('Y-m-d H:i:s'),
         ]);
     }
+
     public function getNameById($id)
     {
         $all = parent::getById($id);

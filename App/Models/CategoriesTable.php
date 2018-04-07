@@ -27,7 +27,7 @@ class CategoriesTable extends Table
 
     public function getChildren(&$categories, $parent_id){
 
-        $result = parent::query("SELECT * FROM categories WHERE parent_id = {$parent_id}", [$parent_id]);
+        $result = parent::query("SELECT * FROM $this->table WHERE parent_id = {$parent_id}", [$parent_id]);
 
         if(!empty($result)){
 

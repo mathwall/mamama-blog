@@ -7,20 +7,62 @@ class ArticlesTable extends Table
 
     protected $table = "articles";
 
-    public function getAll($orderby = "creation_date", $direction = "DESC")
-    {
-        $all = parent::getAll($orderby, $direction);
+    public function getFiltered($post){
+
+        $sql = "SELECT * FROM $this->table WHERE ";
+        $array = [];
+        
+        if(!empty($post["text"])){
+            $array[] = $post["text"]; 
+            $sql .= " (title={$post['text']} OR id_writer = (SELECT id FROM users WHERE name LIKE '%{$post['text']}%' AND user_group != 'USER'))";
+        }
+        if(!empty($post["category"])){
+            if(!empty($post["text"]))
+                $sql .= " AND";
+        
+            $sql .= " id_category={$post['category']}";
+            $array[] = $post["category"];
+        }
+        if(!empty($post["tag"])){
+            if(!empty($post["text"]) || (!empty($post["category"])))
+                $sql .= " AND";
+
+            $tags = "";
+            foreach($post["tag"] as $id_tag){
+                $tags .= $id_tag . ",  ";
+            }
+            rtrim($tags, ', ');
+
+            $sql .= " id IN (SELECT id_articles FROM articles_tags WHERE id_tags IN ({$tags}))";
+            $array[] = $tags;
+        }
+
+        $articles = parent::query($sql, $array);
+        self::getAdjuntContent($articles);
+        return $articles;
+    }
+
+    public function getAdjuntContent(&$data){
+
         $user = new UsersTable();
         $category = new CategoriesTable();
         $comments = new CommentsTable();
         //ajouter le nom de l'auteur, le nom de la catégorie, le nombre de comments
-        foreach ($all as $key => $article) {
-            $all[$key]['author'] = $user->getNamebyId($article['id_writer']);
-            $all[$key]['category'] = $category->getNamebyId($article['id_category']);
-            $all[$key]['nb_comments'] = $comments->getNbCommentsbyId($article['id']);
+
+        foreach ($data as $key => $article) {
+            $data[$key]['author'] = $user->getNamebyId($article['id_writer']);
+            $data[$key]['category'] = $category->getNamebyId($article['id_category']);
+            $data[$key]['nb_comments'] = $comments->getNbCommentsbyId($article['id']);
         }
+    }
+
+    public function getAll($orderby = "creation_date", $direction = "DESC")
+    {
+        $all = parent::getAll($orderby, $direction);
+        self::getAdjuntContent($all);
         return $all;
     }
+
     public function getShortAll()
     {
         $all = self::getAll();
