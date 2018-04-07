@@ -44,7 +44,7 @@ abstract class Controller
         }
         return $array;
     }
-    
+
     public static function dateFormat($string)
     {
         return substr($string, 0, 10);

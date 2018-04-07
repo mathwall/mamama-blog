@@ -6,23 +6,15 @@ use App\Models\ArticlesTable;
 use App\Models\CategoriesTable;
 use App\Models\CommentsTable;
 use App\Models\UsersTable;
+use App\Src\User;
 use App\Src\Request;
+
 //use App\Controllers\CategoriesController;
 
 //TODO récupérer $error
 
 class ArticlesController extends Controller
 {
-
-    /*
-    private static function searchBar(){
-
-        $search = [];
-        CategoriesController::searchCategory($search);
-        return $search;
-    }
-    */
-
     public static function displayAllAction(Request $request)
     {
         $article_table = new ArticlesTable();
@@ -44,14 +36,6 @@ class ArticlesController extends Controller
             "articles" => $articles,
             "search" => ["categories" => $categories],
         ]);
-
-//        parent::render('/Articles/articles.html.twig', ["articles" => $articles, "search" => self::searchBar()]);
-        /* FIXME : Woaaa je ne sais pas qui a fait ca (searchBar), mais c'est pas top :)
-         * Il faut vraiment cibler le besoin, ici, si je comprend bienm il faut la liste des categories.
-         * Pourquoi creer un controlleur Categories alors que c'est un besoin adapter pour le model des categories!
-         * Un controlleur est fait pour gerer des liens de pages, sauf si plus tard on aura besoin de pages vraimeent dediees
-         * pour les categories, autrement ya pas de raison de creer le categorycontrolleur.
-        */
     }
 
     public static function displayAction(Request $request)
@@ -59,13 +43,21 @@ class ArticlesController extends Controller
         $id = $request->getParams()["id"];
         $article_table = new ArticlesTable();
         $comments_table = new CommentsTable();
+        $request = new Request();
         $article = $article_table->getById($id);
-        // Il faut gerer si l'id fourni dans le url n'existe pas
-        if($article) {
+        if ($article) {
+            if ($request->getMethod() == "POST") {
+                $new_comment = [];
+                $new_comment['id_writer'] = User::getInstance()->getId();
+                $new_comment['id_article'] = $article['id'];
+                $new_comment['content'] = $request->getMethodParams()['content'];
+                $new_comment['creation_date'] = date("Y-m-d H:i:s");
+                $comments_table->create($new_comment);
+            }
             $article['path_image'] = "/img/" . $article['path_image'];
             $article['creation_date'] = parent::dateFormat($article['creation_date']);
             $comments = $comments_table->getByArticleId($article['id']);
-            foreach($comments as $key => $comment) {
+            foreach ($comments as $key => $comment) {
                 $comments[$key]['creation_date'] = parent::dateFormat($comment['creation_date']);
             }
             parent::render('/Articles/article.html.twig', ["article" => $article, "comments" => $comments]);
@@ -73,6 +65,14 @@ class ArticlesController extends Controller
             // TODO
             die("Il n'ya pas d'article...");
         }
+    }
+
+    public static function createAction(Request $request)
+    {
+        if ($request->getMethod() == "POST") {
+
+        }
+        parent::render('/Articles/article_edit.html.twig', []);
     }
 
     public static function editAction(Request $request)

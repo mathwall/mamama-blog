@@ -4,8 +4,9 @@ namespace App\Src;
 
 use App\Models\UsersTable;
 
-class User {
-    static public $instance;
+class User
+{
+    public static $instance;
 
     public $id;
     public $username;
@@ -13,34 +14,38 @@ class User {
     public $user_group;
     public $status;
 
-    static public function load() {
+    public static function load()
+    {
         self::$instance = self::getInstance();
     }
 
-    static public function getInstance() {
+    public static function getInstance()
+    {
         return self::$instance === null ? new User(Session::read("Auth.User.id")) : self::$instance;
     }
 
-    protected function __construct($id = null) {
-        if($id) {
-            $this->login($id);
+    protected function __construct($id = null)
+    {
+        if ($id) {
+            $this->login(null, $id);
         }
     }
 
-    public function login($email = null, $id = null) {
+    public function login($email = null, $id = null)
+    {
         $userModel = new UsersTable();
 
-        if($email) {
+        if ($email) {
             $userData = $userModel->getByParams([
                 "email" => $email,
             ], true);
-        } else if($id) {
+        } else if ($id) {
             $userData = $userModel->getById($id, null, true);
         } else {
             return;
         }
 
-        if(count($userData) > 0) {
+        if (count($userData) > 0) {
             Session::write("Auth.User.username", $userData["username"]);
             Session::write("Auth.User.email", $userData["email"]);
             Session::write("Auth.User.user_group", $userData["user_group"]);
@@ -54,7 +59,8 @@ class User {
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
         Session::destroy();
 
         $this->id = null;
@@ -65,19 +71,26 @@ class User {
 
     }
 
-    public function isLogged() {
+    public function isLogged()
+    {
         return $this->id ? true : false;
     }
 
-    public function getRight() {
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getRight()
+    {
         $group = $this->user_group;
-        if($group === null) {
+        if ($group === null) {
             return UserRight::INVITE;
         } else if ($group === "USER") {
             return UserRight::USER;
-        } else if($group === "WRITER") {
+        } else if ($group === "WRITER") {
             return UserRight::WRITER;
-        } else if($group === "ADMIN") {
+        } else if ($group === "ADMIN") {
             return UserRight::ADMIN;
         } else {
             return UserRight::INVITE;
