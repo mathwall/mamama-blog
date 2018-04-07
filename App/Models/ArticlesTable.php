@@ -9,7 +9,7 @@ class ArticlesTable extends Table
 
     public function getFiltered($post){
 
-        $sql = "SELECT * FROM $this->table WHERE ";
+        $sql = "SELECT * FROM $this->table WHERE";
         $array = [];
 
         if(!empty($post["text"])){
@@ -23,24 +23,16 @@ class ArticlesTable extends Table
             $sql .= " id_category={$post['category']}";
             $array[] = $post["category"];
         }
-        
-        /*
+
         if(!empty($post["tag"])){
             if((!empty($post["text"])) && ($post["category"] != "all"))
                 $sql .= " AND";
 
-            $tags = "";
+            $tags = implode(', ', $post["tag"]);
 
-            foreach($post["tag"] as $id_tag){
-                var_dump($tags);
-
-                $tags .= $id_tag . ",  ";
-            }
-            rtrim($tags, ', ');
-
-            $sql .= " id IN (SELECT id_articles FROM articles_tags WHERE id_tags IN ({$tags}))";
+            $sql .= " id IN (SELECT id_article FROM articles_tags WHERE id_tag IN ({$tags}))";
             $array[] = $tags;
-        }*/
+        }
 
         $articles = parent::query($sql, $array);
         self::getAdjuntContent($articles);
