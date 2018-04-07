@@ -31,6 +31,10 @@ class Request {
         return $this->params;
     }
 
+    function setUrl($url){
+        $this->url = $url;
+    }
+
     function getUrl(){
         return $this->url;
     }

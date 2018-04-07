@@ -46,6 +46,7 @@ class User
         }
 
         if (count($userData) > 0) {
+            Session::write("Auth.User.id", $userData["id"]);
             Session::write("Auth.User.username", $userData["username"]);
             Session::write("Auth.User.email", $userData["email"]);
             Session::write("Auth.User.user_group", $userData["user_group"]);

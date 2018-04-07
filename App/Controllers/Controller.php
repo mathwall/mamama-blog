@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+//use App\Dispatcher;
 use App\Src\TwigLoader;
 use App\Src\User;
 use App\Src\UserRight;
@@ -45,11 +46,30 @@ abstract class Controller
         return $array;
     }
 
-    public static function dateFormat($string)
+    static public function dateFormat($string)
     {
         return substr($string, 0, 10);
     }
-    
+
+    /**
+     * @param $param array [string "url", Request "request"]
+     */
+    static public function redirect($param) {
+        try {
+            $request = $param["request"];
+            $url = $param["url"];
+            $request->setUrl($url);
+            header("Location: $url");
+
+            // J'utilise le header pour l'instant, car le dispatcher ne change pas le nouveau url sur la barre de navigation :(
+//            Dispatcher::redirect($request);
+            die();
+        } catch (\Exception $e) {
+            die("missing parameter");
+        }
+
+    }
+
     static public function render($file, $params = []) {
         self::beforeRender($params);
         TwigLoader::render($file, $params);

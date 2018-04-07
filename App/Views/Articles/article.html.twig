@@ -1,8 +1,10 @@
-{% extends "/Articles/base.html.twig" %} {% block head %}
+{% extends "base.html.twig" %}
+{% block head %}
+    <title> {{article.title}} </title>
+    <link href="/css/articles.css" rel="stylesheet">
+{% endblock %}
 
-<title> {{article.title}} </title>
-<link href="/css/articles.css" rel="stylesheet"> {% endblock %} {% block section %}
-
+{% block section %}
 <!-- Page Content -->
 <div class="container">
 

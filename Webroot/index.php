@@ -2,7 +2,6 @@
 
 use App\Dispatcher;
 use App\Src\Request;
-use App\Src\Session;
 
 
 // __ROOT_DIR__ est une constante qui va representer la racine du projet
@@ -18,4 +17,3 @@ require_once __ROOT_DIR__ . '/App/Src/core.php';
 $request = new Request();
 Dispatcher::redirect($request);
 
-die("Tout a faire ici");
