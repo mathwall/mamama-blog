@@ -18,8 +18,9 @@ class ArticlesController extends Controller
     {
         $article_table = new ArticlesTable();
         $post = $request->getMethodParams();
-
+        
         if(!empty($post)){
+            $post = parent::secureDataArray($post);
             $articles = $article_table->getFiltered($post);
         } else {
             $articles = $article_table->getShortAll();
@@ -37,15 +38,9 @@ class ArticlesController extends Controller
         // Recuperation des categories en passant par le MODEL
         $categories_models = new CategoriesTable();
         $categories = $categories_models->getByDesc();
-        foreach ($categories as $key => $category) {
-            $categories[$key] = parent::beforeRender($category);
-        }
 
         $tags_models = new TagsTable();
         $tags = $tags_models->getAll();
-        foreach ($tags as $key => $tag) {
-            $tags[$key] = parent::beforeRender($tag);
-        }
 
         parent::render('/Articles/articles.html.twig', [
             "articles" => $articles,
