@@ -13,24 +13,24 @@ class CategoriesTable extends Table
     }
 
     // Retourne un tableau contenant les catégories, triées par descendance
-    static public function getByDesc(){
+    public function getByDesc(){
 
         $categories = [];
-        $result = parent::query("SELECT * FROM categories WHERE parent_id IS NULL", null, true);
+        $result = parent::query("SELECT * FROM categories WHERE parent_id IS NULL", null);
 
         foreach($result as $category){
             $categories[] = $category;
-            self::getChildren($categories, $result[$category]["id"]);
+            self::getChildren($categories, $category["id"]);
         }
         return $categories;
     }
 
-    static public function getChildren(&$categories, $parent_id){
+    public function getChildren(&$categories, $parent_id){
 
-        $result = parent::query("SELECT * FROM categories WHERE parent_id = {$parent_id}", [$parent_id], true);
-            
+        $result = parent::query("SELECT * FROM categories WHERE parent_id = {$parent_id}", [$parent_id]);
+
         if(!empty($result)){
-            
+
             foreach($result as $children){
                 $categories[] = $children;
                 self::getChildren($categories, $result[$children]["id"]);

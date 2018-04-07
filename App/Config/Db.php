@@ -29,6 +29,9 @@ class Db {
                 $stmt = $pdo->query($sql);
             }
 
+            if($stmt === false) {
+                return false;
+            }
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
             if( strpos($sql, "INSERT") === 0 ||

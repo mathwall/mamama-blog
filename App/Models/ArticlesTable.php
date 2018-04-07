@@ -42,6 +42,11 @@ class ArticlesTable extends Table
     public function getById($id)
     {
         $article = parent::getById($id);
+        if(!$article) {
+            return false;
+        }
+        // il faut checker si y a eu un resultat,
+        // si c'est vide, la suite va crasher ...
         $user = new UsersTable();
         $category = new CategoriesTable();
         $article['author'] = $user->getNamebyId($article['id_writer']);
