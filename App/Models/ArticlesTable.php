@@ -11,34 +11,40 @@ class ArticlesTable extends Table
 
         $sql = "SELECT * FROM $this->table WHERE ";
         $array = [];
-        
+
         if(!empty($post["text"])){
-            $array[] = $post["text"]; 
-            $sql .= " (title={$post['text']} OR id_writer = (SELECT id FROM users WHERE name LIKE '%{$post['text']}%' AND user_group != 'USER'))";
+            $array[] = strtolower($post["text"]); 
+            $sql .= " (title LIKE '%{$post['text']}%' OR id_writer = (SELECT id FROM users WHERE username LIKE '%{$post['text']}%' AND user_group != 'USER'))";
         }
-        if(!empty($post["category"])){
+        if($post["category"] != "all"){
             if(!empty($post["text"]))
                 $sql .= " AND";
         
             $sql .= " id_category={$post['category']}";
             $array[] = $post["category"];
         }
+        
+        /*
         if(!empty($post["tag"])){
-            if(!empty($post["text"]) || (!empty($post["category"])))
+            if((!empty($post["text"])) && ($post["category"] != "all"))
                 $sql .= " AND";
 
             $tags = "";
+
             foreach($post["tag"] as $id_tag){
+                var_dump($tags);
+
                 $tags .= $id_tag . ",  ";
             }
             rtrim($tags, ', ');
 
             $sql .= " id IN (SELECT id_articles FROM articles_tags WHERE id_tags IN ({$tags}))";
             $array[] = $tags;
-        }
+        }*/
 
         $articles = parent::query($sql, $array);
         self::getAdjuntContent($articles);
+
         return $articles;
     }
 

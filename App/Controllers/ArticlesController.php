@@ -24,7 +24,6 @@ class ArticlesController extends Controller
         } else {
             $articles = $article_table->getShortAll();
         }
-        
         if (!$articles) {
             $error = "No articles found";
         } else {
