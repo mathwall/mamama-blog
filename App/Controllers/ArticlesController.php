@@ -145,4 +145,26 @@ class ArticlesController extends Controller
         $categories = $categories_table->getAll();
         parent::render('/Articles/edit.html.twig', ["article" => $article, "categories" => $categories]);
     }
+
+    // Ceci est un controller pour de l'AJAX uniquement
+    static public function deleteAction(Request $request) {
+        header("Content-Type: application/json");
+        $id = null;
+        if($request->getMethod() === "DELETE") {
+            $data = $request->getMethodParams();
+            $articleModel = new ArticlesTable();
+            $id = $data["id"];
+            if(!empty($id)) {
+                $articleModel->deleteById($id);
+            } else {
+                header('HTTP/1.1 500');
+            }
+        } else {
+            header('HTTP/1.1 500');
+        }
+
+        echo json_encode([
+            "success" => true,
+        ]);
+    }
 }

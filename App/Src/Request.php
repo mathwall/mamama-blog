@@ -21,9 +21,10 @@ class Request {
             $this->method_params = $_POST;
         } else if ($this->method_type === "GET") {
             $this->method_params = $_GET;
+        } else if ($this->method_type == "PUT" || $this->method_type == "DELETE") {
+            $this->method_params = [];
+            parse_str(file_get_contents('php://input'), $this->method_params);
         }
-
-        $this->files = isset($_FILES) ? $_FILES : null;
     }
 
     function setParams($params){
