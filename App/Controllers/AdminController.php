@@ -13,6 +13,11 @@ class AdminController extends Controller{
         $articles_table = new ArticlesTable();
         $user = User::getInstance();
 
+        // il faut penser a set les variables qui vont passer dans twig au tout debut,
+        // par exemple, ici, dans la condition du WRITER, $users n'est pas defini, ce qui creer un probleme a la fin
+        $users = null;
+        $errors = null;
+
         if($user->getRight() == "WRITER"){
             echo "here";
             $articles = $articles_table->getIsOwn($user->getUsername());
@@ -22,7 +27,7 @@ class AdminController extends Controller{
             $users_table = new UsersTable();
             $users = $users_table->getAll();
 
-            if(!users)
+            if(!$users)
                 $errors["users"] = "No users found";
         }
 

@@ -20,8 +20,10 @@
 
             <hr>
 
-            <!-- Preview Image -->
-            <img class="img-fluid rounded w-100" src={{article.path_image}} alt="">
+            {% if article.path_image %}
+                <!-- Preview Image -->
+                <img class="img-fluid rounded w-100" src={{article.path_image}} alt="">
+            {% endif %}
 
             <hr>
 

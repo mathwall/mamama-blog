@@ -67,7 +67,7 @@
                                 <td>{{user.id}}</td>
                                 <td>{{user.username}}</td>
                                 <td>{{user.email}}</td>
-                                <td><a href={{'/users/edit/' ~ users.id}}><button type="button">Edit</button></a><a href="/users/delete"><button type="button">Delete</button></a></td>
+                                <td><a href={{'/users/edit/' ~ user.id}}><button type="button">Edit</button></a><a href="/users/delete/{{ user.id }}"><button type="button">Delete</button></a></td>
                             </tr>
                             {% endfor %}
                         </tbody>
