@@ -86,6 +86,11 @@ class User
         return $this->id;
     }
 
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
     public function getRight()
     {
         $group = $this->user_group;

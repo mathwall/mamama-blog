@@ -9,3 +9,5 @@ vendor/
 
 # public folder
 #WebRoot/
+Webroot/media/avatar
+!Webroot/media/avatar/.gitkeep

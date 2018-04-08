@@ -19,6 +19,7 @@ abstract class Controller
         self::secureDataArray($array);
         $user = User::getInstance();
         $array["currentUser"] = [
+            "username" => $user->getUsername(),
             "isLogged" => $user->isLogged(),
             "user_group" => $user->getRight(),
         ];
@@ -73,5 +74,26 @@ abstract class Controller
     static public function render($file, $params = []) {
         self::beforeRender($params);
         TwigLoader::render($file, $params);
+    }
+
+
+    /**
+     * @param $file
+     * @param string $prefix_path Prefix /media/{prefix}/
+     * @param null $name Si null, on genere un nom aleatoire avec uniqid, sinon on le nomme avec la variable
+     * @return null|string
+     */
+    static protected function saveUploadFile($file, $prefix_path = "", $name = null) {
+        try {
+            if($name) {
+                $path = "media/" . $prefix_path . "/" . $name;
+            } else {
+                $path = "media/" . $prefix_path . "/" . uniqid(time());
+            }
+            move_uploaded_file($file, $path);
+            return $path;
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 }

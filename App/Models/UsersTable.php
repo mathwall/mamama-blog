@@ -22,4 +22,6 @@ class UsersTable extends Table
         $all = parent::getById($id);
         return $all['username'];
     }
+
 }
+

@@ -8,7 +8,7 @@ use App\Src\Request;
 
 
 class UsersController extends Controller {
-    public static function loginAction(Request $request) {
+    static public function loginAction(Request $request) {
         // variable de depart pour twig
         $msg = [];
 
@@ -41,7 +41,7 @@ class UsersController extends Controller {
         ]);
     }
 
-    public static function registerAction(Request $request) {
+    static public function registerAction(Request $request) {
         // variable de depart pour twig
         $msg = [];
         $fields = []; // Sert a garder en memoire les valeurs des inputs du formulaire
@@ -67,9 +67,7 @@ class UsersController extends Controller {
                 $hashed_password = self::hashPassword($password);
                 $userModel = new UsersTable();
                 if($userModel->createUser($username, $email, $hashed_password)) {
-                    var_dump("LOL");
                     User::getInstance()->login($email);
-                    var_dump(User::getInstance()->isLogged());
                     self::redirect([
                         "request" => $request,
                         "url" => "/",
@@ -92,7 +90,59 @@ class UsersController extends Controller {
         ]);
     }
 
-    public static function logoutAction(Request $request) {
+    static public function editAction(Request $request) {
+        // variable de depart pour twig
+        $msg = [];
+
+        $modifyParameters = [];
+        $currentUserId = User::getInstance()->getId();
+        $userModel = new UsersTable();
+        $user = $userModel->getById($currentUserId);
+
+        if($request->getMethod() === "POST") {
+            $formParams = $request->getMethodParams();
+            $formParams = self::secureDataArray($formParams);
+            $current_password = $formParams["current-password"];
+            $password = $formParams["new-password"];
+            $password_confirmation = $formParams["password_confirmation"];
+
+            if (empty($current_password)) {
+                $msg["alert"] = "Password not define";
+            } else {
+                $fileAvatar = $request->getFiles()["avatar"]["tmp_name"];
+                if($fileAvatar) {
+                    $filePath = self::saveUploadFile($fileAvatar, "avatar/", $user["username"]);
+                    $modifyParameters["path_avatar"] = $filePath;
+                }
+
+                if(!empty($password)) {
+                    if ($password != $password_confirmation) {
+                        $msg["alert"] = "password not same";
+                    } else if (!self::verifyPassword($current_password, $user["password"] )) {
+                        $msg["alert"] = "password wrong";
+                    } else {
+                        $hashed_password = self::hashPassword($password);
+                        $modifyParameters = ["password" => $hashed_password];
+                    }
+                }
+
+                if(count($modifyParameters) > 0) {
+                    $userModel->modifyById($currentUserId, $modifyParameters);
+                    $msg["success"] = "Account Updated";
+                    $user = $userModel->getById($currentUserId);
+                } else {
+                    $msg["alert"] = "Nothing to update";
+                }
+            }
+        }
+        parent::render('/Users/edit.html.twig', [
+            "msg" => $msg,
+            "user" => $user,
+        ]);
+
+    }
+
+    static public function logoutAction(Request $request) {
         User::getInstance()->logout();
         parent::redirect([
             "request" => $request,
@@ -100,11 +150,11 @@ class UsersController extends Controller {
         ]);
     }
 
-    protected static function verifyPassword($password, $hash) {
+    static protected function verifyPassword($password, $hash) {
         return password_verify($password, $hash);
     }
 
-    protected static function hashPassword($password) {
+    static protected function hashPassword($password) {
         return password_hash($password, PASSWORD_DEFAULT);
     }
 

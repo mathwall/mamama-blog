@@ -15,6 +15,7 @@ class ArticlesController extends Controller
 {
     public static function displayAllAction(Request $request)
     {
+        $errors = [];
         $article_table = new ArticlesTable();
         $post = $request->getMethodParams();
         
@@ -80,6 +81,7 @@ class ArticlesController extends Controller
             foreach ($comments as $key => $comment) {
                 $comments[$key]['creation_date'] = parent::dateFormat($comment['creation_date']);
             }
+
             parent::render('/Articles/article.html.twig', ["article" => $article, "comments" => $comments]);
         } else {
             // TODO

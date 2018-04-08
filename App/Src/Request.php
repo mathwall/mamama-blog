@@ -5,6 +5,7 @@ namespace App\Src;
 class Request {
     
     private $params;
+    private $files;
     private $url;
 
     private $method_type;
@@ -21,6 +22,8 @@ class Request {
         } else if ($this->method_type === "GET") {
             $this->method_params = $_GET;
         }
+
+        $this->files = isset($_FILES) ? $_FILES : null;
     }
 
     function setParams($params){
@@ -37,6 +40,10 @@ class Request {
 
     function getUrl(){
         return $this->url;
+    }
+
+    function getFiles(){
+        return $this->files;
     }
 
     function getMethod() {
