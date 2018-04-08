@@ -15,7 +15,7 @@ class Dispatcher
         $tab = Router::match($request);
 
         if(!$tab) {
-            Controller::NotFoundPageAction($request);
+            Controller::notFoundPageAction($request);
         } else {
             if (!is_callable($tab[0])) {
                 // TODO Steven
@@ -26,8 +26,7 @@ class Dispatcher
                 if (User::getInstance()->getRight() >= $tab[1]) {
                     $tab[0]($request);
                 } else {
-                    //TODO pas les droits
-                    die("Pas les droits");
+                    Controller::forbiddenAction($request);
                 }
             }
         }

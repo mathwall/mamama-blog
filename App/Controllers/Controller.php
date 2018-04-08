@@ -98,7 +98,11 @@ abstract class Controller
         }
     }
 
-    static public function NotFoundPageAction(Request $request) {
+    static public function notFoundPageAction(Request $request) {
         self::render('/404.html.twig');
+    }
+
+    static public function forbiddenAction(Request $request) {
+        self::render('/forbidden.html.twig');
     }
 }
