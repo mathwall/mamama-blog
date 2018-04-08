@@ -48,6 +48,11 @@ ex: marie/database etc.
 Une fois le feature valide, on merge avec le master et on recree une nouvelle branche.  
 
 
+**Git: ignorer une modification d'un fichier versionne, exemple: la Configuration.php**  
+    
+    git update-index --skip-worktree App/Config/Configuration.php
+
+
 **Git Precaution**  
 - Essayer au maximum de commit uniquement les lignes qui concernent le commit!
 - Nom des commits comprehensible !
