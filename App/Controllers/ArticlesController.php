@@ -9,8 +9,6 @@ use App\Models\CommentsTable;
 use App\Src\Request;
 use App\Src\User;
 
-//TODO récupérer $error
-
 class ArticlesController extends Controller
 {
     public static function displayAllAction(Request $request)
@@ -18,8 +16,8 @@ class ArticlesController extends Controller
         $errors = [];
         $article_table = new ArticlesTable();
         $post = $request->getMethodParams();
-        
-        if(!empty($post)){
+
+        if(isset($post) && !empty($post["text"])){
             $post = parent::secureDataArray($post);
             $articles = $article_table->getFiltered($post);
         } else {
@@ -73,6 +71,7 @@ class ArticlesController extends Controller
                 $new_comment['id_article'] = $article['id'];
                 $new_comment['content'] = $request->getMethodParams()['content'];
                 $new_comment['creation_date'] = date("Y-m-d H:i:s");
+                //TODO vérifier que le commentaire n'est pas vide !
                 $comments_table->create($new_comment);
             }
             $article['path_image'] = "/media/" . $article['path_image'];
