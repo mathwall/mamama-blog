@@ -36,7 +36,8 @@ class Db {
 
             if( strpos($sql, "INSERT") === 0 ||
                 strpos($sql, "UPDATE") === 0 ||
-                strpos($sql, "MODIFY") === 0
+                strpos($sql, "MODIFY") === 0 ||
+                strpos($sql, "DELETE") === 0
             ) {
                 if($stmt->rowCount() > 0) {
                     return true;
