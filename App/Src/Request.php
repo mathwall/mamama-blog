@@ -25,6 +25,7 @@ class Request {
             $this->method_params = [];
             parse_str(file_get_contents('php://input'), $this->method_params);
         }
+        $this->files = isset($_FILES) ? $_FILES : null;
     }
 
     function setParams($params){
