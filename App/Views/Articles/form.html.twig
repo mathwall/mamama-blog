@@ -12,11 +12,11 @@
                             <form role="form" method="post">
                                 <div class="form-group">
                                     <label>Title</label>
-                                    <input class="form-control" name="title" value="{{article.title}}">
+                                    <input required class="form-control" name="title" value="{{article.title}}">
                                 </div>
                                 <div class="form-group">
                                     <label>Content</label>
-                                    <textarea class="form-control" rows="3" name="content">{{article.content}}</textarea>
+                                    <textarea required class="form-control" rows="3" name="content">{{article.content}}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Image</label>
@@ -30,8 +30,20 @@
                                         {% endfor %}
                                     </select>
                                 </div>
+                                {% if msg.alert %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ msg.alert }}
+                                    </div>
+                                {% endif %}
+
+                                {% if msg.success %}
+                                    <div class="alert alert-success" role="success">
+                                        {{ msg.success }}
+                                    </div>
+                                {% endif %}
                                 <button type="submit" class="btn btn-primary">{{title}}</button>
                             </form>
+
                         </div>
                     </div>
                     <!-- /.row (nested) -->

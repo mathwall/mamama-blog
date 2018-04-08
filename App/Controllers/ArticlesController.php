@@ -90,13 +90,31 @@ class ArticlesController extends Controller
 
     public static function createAction(Request $request)
     {
+        // variable pour twig,
+        // $msg sera un tableau avec "alert" et "success",
+        // ca permettra a twig d'afficher les message de success ou d'echec
+        $msg = [];
+
         $article_table = new ArticlesTable();
         $categories_table = new CategoriesTable();
         if ($request->getMethod() == "POST") {
             $new_article = $request->getMethodParams();
-            $new_article['id_writer'] = User::getInstance()->getId();
-            $new_article['creation_date'] = date("Y-m-d H:i:s");
-            $article_table->create($new_article);
+            // Il faut controller si les champs title et content ne sont pas vides
+            // PS: on peut aussi rajouter l'attribut required dans le input du html pour que le navigateur fasse un check aussi si le input est bien rempli
+            $title = $new_article["title"];
+            $content = $new_article["content"];
+            if (!empty($title) && !empty($content)) {
+                $new_article['id_writer'] = User::getInstance()->getId();
+                $new_article['creation_date'] = date("Y-m-d H:i:s");
+                // on controle si la creation a ete reussi ou non
+                if($article_table->create($new_article)) {
+                    $msg["success"] = "Creation successfull";
+                } else {
+                    $msg["alert"] = "Error during the creation :(";
+                }
+            } else {
+                $msg["alert"] = "You must fill all fields";
+            }
         }
         // renvoyer la liste des catégories sous forme de tableau
         $categories = $categories_table->getAll();
@@ -105,9 +123,14 @@ class ArticlesController extends Controller
         $edit['status'] = "Create";
         $edit['title'] = "";
         $edit['content'] = "";
-        parent::render('/Articles/create.html.twig', ["edit" => $edit, "categories" => $categories]);
+        parent::render('/Articles/create.html.twig', [
+            "edit" => $edit,
+            "categories" => $categories,
+            "msg" => $msg,
+        ]);
     }
 
+    // TODO: Je te laisse le soin de faire les controles vu plus haut pour le edit
     public static function editAction(Request $request)
     {
         $id = $request->getParams()["id"];

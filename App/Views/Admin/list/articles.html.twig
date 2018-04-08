@@ -1,0 +1,33 @@
+<div class="panel panel-default">
+    <div class="w-100">
+        <a class="float-right" href="/articles/create"><button type="button">Create</button></a>
+        <div>
+            <div class="clearfix"></div>
+            <div class="panel-heading">
+                Articles
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>title</th>
+                            <th>author</th>
+                            <th>manage</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for article in articles %}
+                            <tr>
+                                <td>{{article.id}}</td>
+                                <td>{{article.title}}</td>
+                                <td>{{article.author}}</td>
+                                <td><a href={{'/articles/edit/' ~ article.id}}><button type="button">Edit</button></a><a href="/articles/delete"><button type="button">Delete</button></a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
