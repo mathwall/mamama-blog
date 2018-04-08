@@ -72,6 +72,10 @@ class User
 
     }
 
+    public function getUsername(){
+        return $this->username;
+    }
+
     public function isLogged()
     {
         return $this->id ? true : false;

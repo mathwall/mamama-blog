@@ -7,6 +7,14 @@ class ArticlesTable extends Table
 
     protected $table = "articles";
 
+    public function getIsOwn($username){
+
+        $articles = parent::query("SELECT * FROM $this->table WHERE id_writer = (SELECT id FROM users WHERE username = '{$username}')", [$username]);
+        self::getAdjuntContent($articles);
+        self::getShort($articles);
+        return $articles;
+    }
+
     public function getFiltered($post){
 
         $sql = "SELECT * FROM $this->table WHERE";
@@ -58,18 +66,19 @@ class ArticlesTable extends Table
     {
         $all = parent::getAll($orderby, $direction);
         self::getAdjuntContent($all);
+        self::getShort($all);
         return $all;
     }
 
-    public function getShortAll()
+    public function getShort(&$data)
     {
-        $all = self::getAll();
-        foreach ($all as $key => $article) {
-            $all[$key]['content'] = self::getShorterContent($article['content'], 50);
+        foreach ($data as $key => $article) {
+            $data[$key]['content'] = self::ShorterContent($article['content'], 50);
         }
-        return $all;
+        return $data;
     }
-    protected function getShorterContent($content, $nb_car)
+
+    protected function ShorterContent($content, $nb_car)
     {
         $length = $nb_car;
         if ($nb_car < strlen($content)) {

@@ -96,7 +96,7 @@ class UsersController extends Controller {
         User::getInstance()->logout();
         parent::redirect([
             "request" => $request,
-            "url" => "login/",
+            "url" => "articles/",
         ]);
     }
 

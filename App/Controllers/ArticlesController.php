@@ -22,10 +22,11 @@ class ArticlesController extends Controller
             $post = parent::secureDataArray($post);
             $articles = $article_table->getFiltered($post);
         } else {
-            $articles = $article_table->getShortAll();
+            $articles = $article_table->getAll();
         }
+
         if (!$articles) {
-            $error = "No articles found";
+            $errors["articles"] = "No articles found";
         } else {
             foreach ($articles as $key => $article) {
                 $articles[$key]['path_image'] = "/media/" . $article['path_image'];
@@ -36,13 +37,14 @@ class ArticlesController extends Controller
         // Recuperation des categories en passant par le MODEL
         $categories_models = new CategoriesTable();
         $categories = $categories_models->getByDesc();
-
+        
         $tags_models = new TagsTable();
         $tags = $tags_models->getAll();
 
         parent::render('/Articles/articles.html.twig', [
             "articles" => $articles,
-            "search" => ["categories" => $categories, "tags" => $tags]
+            "search" => ["categories" => $categories, "tags" => $tags],
+            "errors" => $errors,
         ]);
 }
 

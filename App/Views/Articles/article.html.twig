@@ -1,7 +1,6 @@
 {% extends "base.html.twig" %}
 {% block head %}
     <title> {{article.title}} </title>
-    <link href="/css/articles.css" rel="stylesheet">
 {% endblock %}
 
 {% block section %}
@@ -30,12 +29,7 @@
             <p class="lead">{{ article.content }} </p>
             <hr>
 
-            <!-- AJOUTER IF LOGGED -->
-            <!-- AJOUTER IF LOGGED -->
-            <!-- AJOUTER IF LOGGED -->
-            <!-- AJOUTER IF LOGGED -->
-            <!-- AJOUTER IF LOGGED -->
-            <!-- AJOUTER IF LOGGED -->
+            {% if currentUser.user_group >= constant.group.user %}
             <!-- Comments Form -->
             <div class="card my-4">
                 <h5 class="card-header">Leave a Comment:</h5>
@@ -48,7 +42,8 @@
                     </form>
                 </div>
             </div>
-
+            {% endif %}
+            
             <!-- Single Comment -->
             {% for comment in comments %}
             <div class="media mb-4">
