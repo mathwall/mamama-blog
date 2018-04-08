@@ -9,12 +9,13 @@ class Router
     const RULES  = [
         "{^articles/create/?$}" => ["ArticlesController::createAction", UserRight::WRITER],
         "{^articles/edit/(?P<id>\d+)/?$}" => ["ArticlesController::editAction", UserRight::WRITER],
-        "{^articles/edit/?$}" => ["ArticlesController::createAction", UserRight::WRITER],
+        "{^articles/edit/?$}" => ["ArticlesController::editAllAction", UserRight::WRITER],
         "{^articles/(?P<id>\d+)/?$}" => ["ArticlesController::displayAction", UserRight::INVITE],
         "{^articles/?$}" => ["ArticlesController::displayAllAction", UserRight::INVITE],
         "{^login/?$}" => ["UsersController::loginAction", UserRight::INVITE],
         "{^logout/?$}" => ["UsersController::logoutAction", UserRight::INVITE],
         "{^register/?$}" => ["UsersController::registerAction", UserRight::INVITE],
+        "{^setting/?$}" => ["UsersController::editAction", UserRight::USER],
         "{^/?$}" => ["ArticlesController::displayAllAction", UserRight::INVITE],
     ];
 

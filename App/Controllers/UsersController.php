@@ -56,13 +56,14 @@ class UsersController extends Controller {
 
             $fields = ["username" => $username, "email" => $email];
 
-            if (empty($username) || empty($email) || empty($password) || empty($password_confirmation))
+            if (empty($username) || empty($email) || empty($password) || empty($password_confirmation)) {
+
                 $msg["alert"] = "You must fill all fields";
-            else if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+            } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $msg["alert"] = "Email invalid";
-            else if ($password != $password_confirmation)
+            } else if ($password != $password_confirmation) {
                 $msg["alert"] = "password not same";
-            else {
+            } else {
                 $hashed_password = self::hashPassword($password);
                 $userModel = new UsersTable();
                 if($userModel->createUser($username, $email, $hashed_password)) {
@@ -106,4 +107,5 @@ class UsersController extends Controller {
     protected static function hashPassword($password) {
         return password_hash($password, PASSWORD_DEFAULT);
     }
+
 }
