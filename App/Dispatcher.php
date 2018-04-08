@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Controllers\Controller;
 use App\Src\Router;
 use App\Src\Request;
 use App\Src\User;
@@ -14,8 +15,7 @@ class Dispatcher
         $tab = Router::match($request);
 
         if(!$tab) {
-            // TODO 404
-            die("Page 404");
+            Controller::NotFoundPageAction($request);
         } else {
             if (!is_callable($tab[0])) {
                 // TODO Steven

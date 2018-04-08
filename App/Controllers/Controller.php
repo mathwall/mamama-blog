@@ -6,6 +6,7 @@ namespace App\Controllers;
 use App\Src\TwigLoader;
 use App\Src\User;
 use App\Src\UserRight;
+use App\Src\Request;
 
 abstract class Controller
 {
@@ -95,5 +96,9 @@ abstract class Controller
         } catch (\Exception $e) {
             return null;
         }
+    }
+
+    static public function NotFoundPageAction(Request $request) {
+        self::render('/404.html.twig');
     }
 }
