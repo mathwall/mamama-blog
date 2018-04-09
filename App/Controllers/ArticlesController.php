@@ -41,8 +41,15 @@ class ArticlesController extends Controller
         $tags_models = new TagsTable();
         $tags = $tags_models->getAll();
 
+        $comments_table = new CommentsTable();
+        $comments = $comments_table->getByArticleId($article['id']);
+        foreach ($comments as $key => $comment) {
+            $comments[$key]['creation_date'] = parent::dateFormat($comment['creation_date']);
+        }
+
         parent::render('/Articles/articles.html.twig', [
             "articles" => $articles,
+            "comments" => $comments,
             "search" => ["categories" => $categories, "tags" => $tags],
             "errors" => $errors,
         ]);

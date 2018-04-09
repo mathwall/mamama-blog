@@ -29,7 +29,16 @@
             </div>
             <div class="card-footer text-muted">
               Posted on {{ article.creation_date }} by {{ article.author }}
-              <button id="comments" class="float-right">{{ article.nb_comments }}</button>
+              <button class="comments float-right">{{ article.nb_comments }}</button>
+            </div>
+            <div class="comments card-body">
+              {% for comment in comments %}
+              <div>
+                <img class="d-flex mr-3 rounded-circle" src={% if comment.path_avatar %}/{{ comment.path_avatar }}{% else %} '/assets/img/avatar.png' {% endif %} alt="" width="20" height="20">
+                <p class="card-text">{{comment.author}}</p>
+                <p class="card-text">{{comment.content}}</p>
+              </div>
+              {% endfor %}
             </div>
           </div>
           {% endfor %}
@@ -68,16 +77,12 @@
             <div>
               <h5 class="card-header">Categories</h5>
               <div class="card-body">
-                <div class="row">
-                  <div class="col-lg-6">
                     <select name="category">
                     <option value="all">All</option>
                       {% for category in search.categories %}
                         <option value={{ category.id }}>{{ category.name }}</option>
                       {% endfor %}
                     </select>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -85,15 +90,11 @@
             <div>
               <h5 class="card-header">Tags</h5>
               <div class="card-body">
-                <div class="row">
-                  <div class="col-lg-6">
-                    <ul class="list-unstyled mb-0">
-                      {% for tag in search.tags %}
-                      <li class="d-inline mr-2"><label class="mr-1">{{ tag.name }}</label><input type="checkbox" name="tag[]" value={{ tag.id }}></li>
-                      {% endfor %}
-                    </ul>
-                  </div>
-                </div>
+                <ul class="list-unstyled mb-0">
+                  {% for tag in search.tags %}
+                  <li class="d-inline mr-2"><label class="mr-1">{{ tag.name }}</label><input type="checkbox" name="tag[]" value={{ tag.id }}></li>
+                  {% endfor %}
+                </ul>
               </div>
             </div>
             <div class="m-auto">
@@ -110,4 +111,8 @@
     </div>
     <!-- /.container -->
 
+{% endblock %}
+
+{% block script %}
+    <script src="js/articles.js"></script>
 {% endblock %}
