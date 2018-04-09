@@ -11,7 +11,7 @@ class CategoriesTable extends Table
         $category = parent::getById($id);
         return $category['name'];
     }
-
+    
     // Retourne un tableau contenant les catégories, triées par descendance
     public function getByDesc(){
 

@@ -1,6 +1,6 @@
-// Ce code sert a rafraichir l'avatar des qu'on selectionne une nouvelle image d'upload
+//rafraîchir l'image de l'article dès que l'on sélectionne une nouvelle image
 $(function(){
-    $('#avatar').change(function(){
+    $('#path_image').change(function(){
         var input = this;
         var url = $(this).val();
         var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
@@ -9,7 +9,7 @@ $(function(){
             var reader = new FileReader();
 
             reader.onload = function (e) {
-                $('#avatar-pic').attr('src', e.target.result);
+                $('#img').attr('src', e.target.result);
             };
             reader.readAsDataURL(input.files[0]);
         }

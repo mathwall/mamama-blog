@@ -107,7 +107,7 @@ class UsersController extends Controller {
             $password_confirmation = $formParams["password_confirmation"];
 
             if (empty($current_password)) {
-                $msg["alert"] = "Password not define";
+                $msg["alert"] = "Password not defined";
             } else {
                 $fileAvatar = $request->getFiles()["avatar"]["tmp_name"];
                 if($fileAvatar) {

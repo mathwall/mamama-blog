@@ -9,21 +9,28 @@
                     <div class="row">
                         <div class="col-lg-8 m-auto">
                             <h1 class="page-header">{{title}} article</h1>
-                            <form role="form" method="post">
+                            <form enctype="multipart/form-data" role="form" method="post">
                                 <div class="form-group">
-                                    <label>Title</label>
-                                    <input required class="form-control" name="title" value="{{article.title}}">
+                                    <label for="title">Title</label>
+                                    <input required class="form-control" id="title" name="title" value="{{article.title}}">
                                 </div>
                                 <div class="form-group">
-                                    <label>Content</label>
-                                    <textarea required class="form-control" rows="3" name="content">{{article.content}}</textarea>
+                                    <label for="content">Content</label>
+                                    <textarea required class="form-control" rows="3" id="content" name="content">{{article.content}}</textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label>Image</label>
-                                    <input type="file" name="path_image">
+                                    <label for="path_image">
+                                        Image <br>
+                                        {% if article.path_image %}
+                                        <img class="border" id="img" src="{{ article.path_image }}" alt="Image de l'article" />
+                                        {% else %}
+                                        <img class="border" id="img" src="/assets/img/no_image_available.jpg" alt="Image de l'article" />
+                                        {% endif %}
+                                    </label>
+                                    <input hidden type="file" id="path_image" name="path_image">
                                 </div>
                                 <div class="form-group">
-                                    <label>Category</label>
+                                    <label for="id_category">Category</label>
                                     <select class="form-control" name="id_category">
                                         {% for category in categories %}
                                         <option value={{category.id}}>{{category.name}}</option>
@@ -31,15 +38,13 @@
                                     </select>
                                 </div>
                                 {% if msg.alert %}
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ msg.alert }}
-                                    </div>
-                                {% endif %}
-
-                                {% if msg.success %}
-                                    <div class="alert alert-success" role="success">
-                                        {{ msg.success }}
-                                    </div>
+                                <div class="alert alert-danger" role="alert">
+                                    {{ msg.alert }}
+                                </div>
+                                {% endif %} {% if msg.success %}
+                                <div class="alert alert-success" role="success">
+                                    {{ msg.success }}
+                                </div>
                                 {% endif %}
                                 <button type="submit" class="btn btn-primary">{{title}}</button>
                             </form>

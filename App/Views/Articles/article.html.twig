@@ -4,6 +4,12 @@
 {% endblock %}
 
 {% block section %}
+{% if no_article %}
+
+<p class="lead">Cet article n'existe pas encore :)</p>
+
+{% else %}
+
 <!-- Page Content -->
 <div class="container">
 
@@ -17,7 +23,6 @@
 
             <!-- Date/Time -->
             <p>Posted on {{ article.creation_date }}, by {{ article.author }}</p>
-
             <hr>
 
             {% if article.path_image %}
@@ -30,6 +35,12 @@
             <!-- Post Content -->
             <p class="lead">{{ article.content }} </p>
             <hr>
+
+            <p class="badge badge-primary">{{ article.category }}</p>            
+            {% for tag in tags %}
+            <p class="badge badge-light">{{ tag.name }}</p>
+            {% endfor %}
+            <hr>            
 
             {% if currentUser.user_group >= constant.group.user %}
             <!-- Comments Form -->
@@ -61,8 +72,8 @@
 
     </div>
     <!-- /.row -->
-
 </div>
 <!-- /.container -->
+{% endif %}
 
 {% endblock %}
