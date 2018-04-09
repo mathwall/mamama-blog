@@ -24,7 +24,7 @@
                                 <td>{{category.name}}</td>
                                 <td>{% if category.parent_id %}{{category.parent_id}}{% else %}NULL{% endif %}</td>
                                 <td>{% if category.parent_name %}{{category.parent_name}}{% else %}NULL{% endif %}</td>
-                                <td><a href={{'/articles/edit/' ~ article.id}}><button type="button">Edit</button></a><a id="delete_article_{{ article.id }}" href="/articles/delete/{{ article.id }}"><button type="button">Delete</button></a></td>
+                                <td><a href={{'/categories/edit/' ~ category.id}}><button type="button">Edit</button></a><a id="delete_category_{{ category.id }}" href="/categories/delete/{{ category.id }}"><button type="button">Delete</button></a></td>
                             </tr>
                         {% endfor %}
                         </tbody>

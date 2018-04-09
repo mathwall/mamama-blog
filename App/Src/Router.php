@@ -19,6 +19,9 @@ class Router
         // Users
         "{^users/edit/(?P<id>\d+)/?$}" => ["UsersController::editAction", UserRight::WRITER],
 
+        // Categories
+        "{^categories/delete/?$}" => ["CategoriesController::deleteAction", UserRight::ADMIN],
+
         // Admin
         "{^admin/users/edit/?$}" => ["AdminController::displayUsersAction", UserRight::ADMIN],
         "{^admin/tags/edit/?$}" => ["AdminController::displayTagsAction", UserRight::ADMIN],

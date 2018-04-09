@@ -113,7 +113,7 @@ abstract class Controller
     }
 
     static protected function sendJsonErrorAndDie($errorMsg = "", $code = "") {
-        header('HTTP/1.1 500');
+        header('HTTP/1.1 500' . $errorMsg);
         header('Content-Type: application/json; charset=UTF-8');
         die(json_encode(['message' => $errorMsg, 'code' => $code]));
     }

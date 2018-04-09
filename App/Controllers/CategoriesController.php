@@ -2,7 +2,10 @@
 
 namespace App\Controllers;
 
+use App\Models\CategoriesTable;
 use App\Src\Request;
+use App\Src\User;
+use App\Src\UserRight;
 
 
 class CategoriesController extends Controller {
@@ -57,5 +60,38 @@ class CategoriesController extends Controller {
             "user" => $user,
         ]);
 
+    }
+
+    // Ceci est un controller pour de l'AJAX uniquement
+    public static function deleteAction(Request $request)
+    {
+        if ($request->getMethod() === "DELETE") {
+            $data = $request->getMethodParams();
+            $id = $data["id"];
+            if (empty($id)) {
+                self::sendJsonErrorAndDie("Id is empty!");
+            }
+
+            $categoriesModel = new CategoriesTable();
+            // On check si l'article existe bien
+            $categories = $categoriesModel->getById($id);
+            if (!$categories) {
+                self::sendJsonErrorAndDie("Categories does not exist!");
+            }
+
+            $user = User::getInstance();
+            // On check si l'utilisateur a les droits pour supprimer l'article
+            if ($user->getRight() >= UserRight::ADMIN ) {
+                if($categoriesModel->deleteById($id)) {
+                    self::sendJsonDataAndDie(["success" => true]);
+                } else {
+                    self::sendJsonErrorAndDie("Can't delete, check if articles are not attached to this category!");
+                }
+            } else {
+                self::sendJsonErrorAndDie("You don't have right to delete this article!");
+            }
+        } else {
+            self::sendJsonErrorAndDie("Steven, is it you??");
+        }
     }
 }
