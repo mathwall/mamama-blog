@@ -13,7 +13,15 @@ class Router
         "{^articles/delete/?$}" => ["ArticlesController::deleteAction", UserRight::WRITER],
         "{^articles/(?P<id>\d+)/?$}" => ["ArticlesController::displayAction", UserRight::INVITE],
         "{^articles/?$}" => ["ArticlesController::displayAllAction", UserRight::INVITE],
+
+        // Admin
+        "{^admin/users/edit/?$}" => ["AdminController::displayUsersAction", UserRight::ADMIN],
+        "{^admin/tags/edit/?$}" => ["AdminController::displayTagsAction", UserRight::ADMIN],
+        "{^admin/comments/edit/?$}" => ["AdminController::displayCommentsAction", UserRight::ADMIN],
+        "{^admin/articles/edit/?$}" => ["AdminController::displayArticlesAction", UserRight::WRITER],
+        "{^admin/categories/edit/?$}" => ["AdminController::displayCategoriesAction", UserRight::WRITER],
         "{^admin/?$}" => ["AdminController::displayAllAction", UserRight::WRITER],
+
         "{^login/?$}" => ["UsersController::loginAction", UserRight::BANNED],
         "{^logout/?$}" => ["UsersController::logoutAction", UserRight::BANNED],
         "{^register/?$}" => ["UsersController::registerAction", UserRight::BANNED],

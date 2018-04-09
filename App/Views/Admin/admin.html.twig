@@ -5,15 +5,16 @@
 {% endblock %} 
 
 {% block section %}
-<div class="container">
-<div class="row">
-    <div class="col-lg-12">
-        {% include "/Admin/list/articles.html.twig" %}
-        {% if currentUser.user_group >= constant.group.admin %}
-            {% include "/Admin/list/users.html.twig" %}
-        {% endif %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                {% include "/Admin/list/articles.html.twig" %}
+                {% if currentUser.user_group >= constant.group.admin %}
+                    {% include "/Admin/list/users.html.twig" %}
+                {% endif %}
+            </div>
+        </div>
     </div>
-</div>
 {% endblock %}
 
 

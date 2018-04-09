@@ -92,7 +92,7 @@ abstract class Controller
                 $path = "media/" . $prefix_path . "/" . uniqid(time());
             }
             move_uploaded_file($file, $path);
-            return $path;
+            return "/" . $path;
         } catch (\Exception $e) {
             return null;
         }
@@ -104,5 +104,17 @@ abstract class Controller
 
     static public function forbiddenAction(Request $request) {
         self::render('/forbidden.html.twig');
+    }
+
+    static protected function sendJsonDataAndDie($arrayData) {
+        header("Content-Type: application/json");
+        echo json_encode($arrayData);
+        die();
+    }
+
+    static protected function sendJsonErrorAndDie($errorMsg = "", $code = "") {
+        header('HTTP/1.1 500');
+        header('Content-Type: application/json; charset=UTF-8');
+        die(json_encode(['message' => $errorMsg, 'code' => $code]));
     }
 }
