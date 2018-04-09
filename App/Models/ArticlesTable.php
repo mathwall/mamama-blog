@@ -26,7 +26,7 @@ class ArticlesTable extends Table
             $array[] = strtolower($post["text"]); 
             $sql .= " (title LIKE '%{$post['text']}%' OR id_writer IN (SELECT id FROM users WHERE username LIKE '%{$post['text']}%' AND user_group != 'USER') OR content LIKE '%{$post['text']}%')";
         }
-        if($post["category"] != "all"){
+        if(!empty($post["category"]) && $post["category"] != "all"){
             if(!empty($post["text"]))
                 $sql .= " AND";
         
@@ -35,6 +35,9 @@ class ArticlesTable extends Table
         }
 
         if(!empty($post["tag"])){
+            if(!is_array($post["tag"])) {
+                $post["tag"]=[$post["tag"]];
+            }
             if((!empty($post["text"])) && ($post["category"] != "all"))
                 $sql .= " AND";
 
@@ -44,6 +47,7 @@ class ArticlesTable extends Table
             $array[] = $tags;
         }
 
+        $sql .="ORDER BY creation_date DESC";
         $articles = parent::query($sql, $array);
         self::getAdjuntContent($articles);
 

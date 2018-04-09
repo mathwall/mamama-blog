@@ -16,9 +16,9 @@ class ArticlesController extends Controller
     {
         $errors = [];
         $article_table = new ArticlesTable();
+        $tags_models = new TagsTable();
         $post = $request->getMethodParams();
-
-        if (isset($post) && !empty($post["text"])) {
+        if (!empty($post) && (!empty($post['text']) || (!empty($post['category']) && $post['category'] != "all") || !empty($post['tag']))) {
             $post = parent::secureDataArray($post);
             $articles = $article_table->getFiltered($post);
         } else {
@@ -31,14 +31,13 @@ class ArticlesController extends Controller
             foreach ($articles as $key => $article) {
                 $articles[$key]['path_image'] = $article['path_image'];
                 $articles[$key]['creation_date'] = parent::dateFormat($article['creation_date']);
+                $articles[$key]['tags'] = $tags_models->getByArticleId($article['id']);
             }
         }
-
         // Recuperation des categories en passant par le MODEL
         $categories_models = new CategoriesTable();
         $categories = $categories_models->getByDesc();
 
-        $tags_models = new TagsTable();
         $tags = $tags_models->getAll();
 
         $comments_table = new CommentsTable();
@@ -150,6 +149,7 @@ class ArticlesController extends Controller
         $id = $request->getParams()["id"];
         $article_table = new ArticlesTable();
         $categories_table = new CategoriesTable();
+        $msg = [];
 
         //SI L'UTILISATEUR A DÉJÀ CLIQUÉ SUR Edit, GÉRER L'ÉDITION DE L'ARTICLE
         if ($request->getMethod() == "POST") {
@@ -183,9 +183,11 @@ class ArticlesController extends Controller
         //PAR DÉFAUT, AFFICHER LES DONNÉES DE L'ARTICLE QUE L'ON SOUHAITE ÉDITER
         $article = $article_table->getById($id);
         $categories = $categories_table->getAll();
+        var_dump($msg);
         parent::render('/Articles/edit.html.twig', [
             "article" => $article,
             "categories" => $categories,
+            "msg" => $msg,
         ]);
     }
 

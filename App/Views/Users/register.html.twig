@@ -7,7 +7,7 @@
 {% block section %}
     <div class="container">
         <div class="row justify-content-sm-center">
-            <form class="col-sm-12 col-md-6" method="POST" action="">
+            <form enctype="multipart/form-data" class="col-sm-12 col-md-6" method="POST" action="">
 
                 <div class="form-group mt-5">
                     <label for="nom">Username</label>
@@ -29,6 +29,17 @@
                     <input required type="password" class="form-control" id="password_confirmation" placeholder="password confirmation" name="password_confirmation">
                 </div>
 
+                <div class="form-group text-center">
+                        <label for="avatar">
+                            {% if user.path_avatar %}
+                                <img id="avatar-pic" src="{{ user.path_avatar }}" alt="avatar" width="250" height="250"/>
+                            {% else %}
+                                <img id="avatar-pic" src="/assets/img/avatar.png" alt="avatar" alt="avatar" width="250" height="250"/>
+                            {% endif %}
+                        </label>
+                        <input hidden type="file" id="avatar" name="avatar">
+                    </div>
+
                 {% if msg.alert %}
                     <div class="alert alert-danger" role="alert">
                         {{ msg.alert }}
@@ -39,4 +50,8 @@
             </form>
         </div>
     </div>
+{% endblock %}
+
+{% block script %}
+    <script src="/js/user.edit.js"></script>
 {% endblock %}

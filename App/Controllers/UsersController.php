@@ -60,13 +60,17 @@ class UsersController extends Controller {
 
                 $msg["alert"] = "You must fill all fields";
             } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $msg["alert"] = "Email invalid";
+                $msg["alert"] = "Invalid email";
             } else if ($password != $password_confirmation) {
-                $msg["alert"] = "password not same";
+                $msg["alert"] = "Password doesn't match with password confirmation";
             } else {
+                $fileAvatar = $request->getFiles()["avatar"]["tmp_name"];
+                if($fileAvatar) {
+                    $path_avatar = self::saveUploadFile($fileAvatar, "avatar/", $username);
+                }
                 $hashed_password = self::hashPassword($password);
                 $userModel = new UsersTable();
-                if($userModel->createUser($username, $email, $hashed_password)) {
+                if($userModel->createUser($username, $email, $hashed_password, $path_avatar)) {
                     User::getInstance()->login($email);
                     self::redirect([
                         "request" => $request,

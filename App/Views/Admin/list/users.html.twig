@@ -27,7 +27,7 @@
                                 <td>{{user.username}}</td>
                                 <td>{{user.email}}</td>
                                 <td>
-                                    <img src="/{{ user.path_avatar }}" alt="" height="100">
+                                    <img src="{{ user.path_avatar }}" alt="" height="100">
                                 </td>
                                 <td>{{user.user_group}}</td>
                                 <td>{% if user.status == "1" %}OK{% else %}BAN{% endif %}</td>

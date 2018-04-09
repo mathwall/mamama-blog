@@ -13,6 +13,7 @@ class Router
         "{^articles/edit/?$}" => ["ArticlesController::editAllAction", UserRight::WRITER],
         "{^articles/delete/?$}" => ["ArticlesController::deleteAction", UserRight::WRITER],
         "{^articles/(?P<id>\d+)/?$}" => ["ArticlesController::displayAction", UserRight::INVITE],
+        "{^articles\?}" => ["ArticlesController::displayAllAction", UserRight::INVITE],
         "{^articles/?$}" => ["ArticlesController::displayAllAction", UserRight::INVITE],
 
         // Users
