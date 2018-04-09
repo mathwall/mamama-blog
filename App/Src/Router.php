@@ -7,12 +7,16 @@ class Router
 {
     //TODO créer constantes rights
     const RULES  = [
+        // Articles
         "{^articles/create/?$}" => ["ArticlesController::createAction", UserRight::WRITER],
         "{^articles/edit/(?P<id>\d+)/?$}" => ["ArticlesController::editAction", UserRight::WRITER],
         "{^articles/edit/?$}" => ["ArticlesController::editAllAction", UserRight::WRITER],
         "{^articles/delete/?$}" => ["ArticlesController::deleteAction", UserRight::WRITER],
         "{^articles/(?P<id>\d+)/?$}" => ["ArticlesController::displayAction", UserRight::INVITE],
         "{^articles/?$}" => ["ArticlesController::displayAllAction", UserRight::INVITE],
+
+        // Users
+        "{^users/edit/(?P<id>\d+)/?$}" => ["UsersController::editAction", UserRight::WRITER],
 
         // Admin
         "{^admin/users/edit/?$}" => ["AdminController::displayUsersAction", UserRight::ADMIN],

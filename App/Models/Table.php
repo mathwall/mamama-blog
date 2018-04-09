@@ -69,7 +69,7 @@ abstract class Table
         $modif_params = [];
         $params = [];
         foreach ($fields as $key => $value) {
-            if ($value) {
+            if ($value !== null) {
                 $modif_params[] = "$key = ?";
                 $params[] = $value;
             }

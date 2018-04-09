@@ -14,6 +14,9 @@
                             <th>id</th>
                             <th>username</th>
                             <th>email</th>
+                            <th>picture</th>
+                            <th>Group</th>
+                            <th>status</th>
                             <th>manage</th>
                         </tr>
                         </thead>
@@ -23,7 +26,12 @@
                                 <td>{{user.id}}</td>
                                 <td>{{user.username}}</td>
                                 <td>{{user.email}}</td>
-                                <td><a href={{'/users/edit/' ~ user.id}}><button type="button">Edit</button></a><a href="/users/delete/{{ user.id }}"><button type="button">Delete</button></a></td>
+                                <td>
+                                    <img src="/{{ user.path_avatar }}" alt="" height="100">
+                                </td>
+                                <td>{{user.user_group}}</td>
+                                <td>{% if user.status == "1" %}OK{% else %}BAN{% endif %}</td>
+                                <td><a href={{'/users/edit/' ~ user.id}}><button type="button">Edit</button></a></td>
                             </tr>
                         {% endfor %}
                         </tbody>

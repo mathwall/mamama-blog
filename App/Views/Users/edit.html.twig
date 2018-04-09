@@ -1,0 +1,72 @@
+{% extends "base.html.twig" %}
+
+{% block head %}
+    <title>Edit {{ user.id }} </title>
+{% endblock %}
+
+{% block section %}
+    <div class="container">
+        <div class="row justify-content-sm-center">
+            <form enctype="multipart/form-data" class="col-sm-12 col-md-6" method="POST" action="">
+
+                <div class="form-group mt-5">
+                    <label for="nom">Username</label>
+                    <input type="text" class="form-control" id="nom" aria-describedby="emailHelp" placeholder="Username" name="username" value="{{ user.username }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="mail">Email</label>
+                    <input type="email" class="form-control" id="mail" aria-describedby="emailHelp" placeholder="Email" name="email" value="{{ user.email }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Current Password" name="password">
+                </div>
+
+                <div class="form-group">
+                    <label for="user_group">User Group</label>
+                    <select class="form-control" id="user_group" name="user_group">
+                        <option value="USER" {% if user.user_group == "USER" %} selected {% endif %}>USER</option>
+                        <option value="WRITER" {% if user.user_group == "WRITER" %} selected {% endif %}>WRITER</option>
+                        <option value="ADMIN" {% if user.user_group == "ADMIN" %} selected {% endif %}>ADMIN</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <input type="checkbox" id="status" name="status" value="1" {% if user.status == "1" %} checked {% endif %}>
+                    <label for="status">Allow to use this website</label>
+                </div>
+
+
+                <div class="form-group text-center">
+                    <label for="avatar">
+                        {% if user.path_avatar %}
+                            <img id="avatar-pic" src="{{ user.path_avatar }}" alt="avatar" width="250" height="250"/>
+                        {% else %}
+                            <img id="avatar-pic" src="/assets/img/avatar.png" alt="avatar" alt="avatar" width="250" height="250"/>
+                        {% endif %}
+                    </label>
+                    <input hidden type="file" id="avatar" name="avatar">
+                </div>
+                {% if msg.alert %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ msg.alert }}
+                    </div>
+                {% endif %}
+
+                {% if msg.success %}
+                    <div class="alert alert-success" role="success">
+                        {{ msg.success }}
+                    </div>
+                {% endif %}
+
+                <button type="submit" class="btn btn-primary btn-block mt-3">Update</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="/js/user.edit.js"></script>
+{% endblock %}
