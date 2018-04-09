@@ -70,7 +70,7 @@ class ArticlesController extends Controller
                 $new_comment = [];
                 $new_comment['id_writer'] = User::getInstance()->getId();
                 $new_comment['id_article'] = $article['id'];
-                $new_comment['content'] = $request->getlightMethodParams()['content'];
+                $new_comment['content'] = $request->getMethodParams()['content'];
                 $new_comment['creation_date'] = date("Y-m-d H:i:s");
                 if (!empty($new_comment['content'])) {
                     $comments_table->create($new_comment);
