@@ -25,7 +25,7 @@ class Router
         "{^login/?$}" => ["UsersController::loginAction", UserRight::BANNED],
         "{^logout/?$}" => ["UsersController::logoutAction", UserRight::BANNED],
         "{^register/?$}" => ["UsersController::registerAction", UserRight::BANNED],
-        "{^setting/?$}" => ["UsersController::editAction", UserRight::USER],
+        "{^setting/?$}" => ["UsersController::settingAction", UserRight::USER],
         "{^/?$}" => ["ArticlesController::displayAllAction", UserRight::INVITE],
     ];
 

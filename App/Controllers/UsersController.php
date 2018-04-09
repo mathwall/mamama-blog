@@ -90,7 +90,7 @@ class UsersController extends Controller {
         ]);
     }
 
-    static public function editAction(Request $request) {
+    static public function settingAction(Request $request) {
         // variable de depart pour twig
         $msg = [];
 
@@ -135,7 +135,7 @@ class UsersController extends Controller {
                 }
             }
         }
-        parent::render('/Users/edit.html.twig', [
+        parent::render('/Users/setting.html.twig', [
             "msg" => $msg,
             "user" => $user,
         ]);
