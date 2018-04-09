@@ -12,4 +12,7 @@ vendor/
 Webroot/media/avatar
 !Webroot/media/avatar/.gitkeep
 
+Webroot/media/article_img/
+!Webroot/media/article_img/.gitkeep
+
 **/*.log
