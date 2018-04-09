@@ -11,7 +11,8 @@ use App\Src\UserRight;
 
 
 class Dispatcher
-{
+{   
+    // Récupère la chaine de caractère renvoyée par le router, effectue des vérifications (résultat, droit requis etc...) et exectue la méthode correspondante
     static public function redirect(Request $request)
     {
         $tab = Router::match($request);

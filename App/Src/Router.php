@@ -5,7 +5,7 @@ namespace App\Src;
 
 class Router
 {
-    //TODO créer constantes rights
+    // Définie la méthode à appeler en fonction du chemin de chacune des requêtes
     const RULES  = [
         // Articles
         "{^articles/create/?$}" => ["ArticlesController::createAction", UserRight::WRITER],
@@ -33,10 +33,12 @@ class Router
         "{^/?$}" => ["ArticlesController::displayAllAction", UserRight::INVITE],
     ];
 
+    // Vérifie que le chemin existe dans RULES et renvoie la chaine de caractère associée au dispatcher
     static public function match(Request $request)
     {
         foreach(self::RULES as $pattern => $method){
             if(preg_match($pattern, $request->getUrl(), $params)){
+                // Enregistre les paramètres passés dans la requete
                 $request->setParams($params);
                 $method[0] = "App\\Controllers\\" . $method[0];
                 return $method;

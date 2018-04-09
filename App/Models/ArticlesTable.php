@@ -7,6 +7,7 @@ class ArticlesTable extends Table
 
     protected $table = "articles";
 
+    // Récupère uniquement les articles rédigés par l'utilisateur courant
     public function getIsOwn($username){
 
         $articles = parent::query("SELECT * FROM $this->table WHERE id_writer = (SELECT id FROM users WHERE username = '{$username}')", [$username]);
@@ -15,6 +16,7 @@ class ArticlesTable extends Table
         return $articles;
     }
 
+    // Sélectionne les articles selon les critères de filtrage (titre, auteur, catégorie, tags) définis dans la searchbar
     public function getFiltered($post){
 
         $sql = "SELECT * FROM $this->table WHERE";
@@ -28,7 +30,7 @@ class ArticlesTable extends Table
             if(!empty($post["text"]))
                 $sql .= " AND";
         
-            $sql .= " id_category={$post['category']}";
+            $sql .= " id_category='{$post['category']}'";
             $array[] = $post["category"];
         }
 
@@ -48,12 +50,12 @@ class ArticlesTable extends Table
         return $articles;
     }
 
+    // Ajoute le nom de son auteur, le nom de sa catégorie et son nombre de comments à chaque article récupérés dans une précédente requete
     public function getAdjuntContent(&$data){
 
         $user = new UsersTable();
         $category = new CategoriesTable();
         $comments = new CommentsTable();
-        //ajouter le nom de l'auteur, le nom de la catégorie, le nombre de comments
 
         foreach ($data as $key => $article) {
             $data[$key]['author'] = $user->getNamebyId($article['id_writer']);

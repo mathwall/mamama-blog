@@ -6,6 +6,7 @@ class TagsTable extends Table {
 
     protected $table = "tags";
 
+    //Récupére tous les tags associés à un article
     public function getByArticleId($id){
 
         $tags = [];

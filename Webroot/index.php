@@ -16,4 +16,3 @@ require_once __ROOT_DIR__ . '/App/Src/core.php';
 
 $request = new Request();
 Dispatcher::redirect($request);
-
