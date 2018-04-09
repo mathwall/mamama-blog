@@ -13,6 +13,8 @@
                         <tr>
                             <th>id</th>
                             <th>title</th>
+                            <th>content</th>
+                            <th>picture</th>
                             <th>author</th>
                             <th>manage</th>
                         </tr>
@@ -22,6 +24,10 @@
                             <tr id="tr_article_{{ article.id }}">
                                 <td>{{article.id}}</td>
                                 <td>{{article.title}}</td>
+                                <td>{{article.content}}</td>
+                                <td>
+                                    <img src="{{ article.path_image }}" alt="" height="100">
+                                </td>
                                 <td>{{article.author}}</td>
                                 <td><a href={{'/articles/edit/' ~ article.id}}><button type="button">Edit</button></a><a id="delete_article_{{ article.id }}" href="/articles/delete/{{ article.id }}"><button type="button">Delete</button></a></td>
                             </tr>
