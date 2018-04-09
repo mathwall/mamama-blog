@@ -15,6 +15,8 @@ class ArticlesController extends Controller
     public static function displayAllAction(Request $request)
     {
         $errors = [];
+        $articles = [];
+        $comments = [];
         $article_table = new ArticlesTable();
         $tags_models = new TagsTable();
         $post = $request->getMethodParams();
@@ -33,18 +35,19 @@ class ArticlesController extends Controller
                 $articles[$key]['creation_date'] = parent::dateFormat($article['creation_date']);
                 $articles[$key]['tags'] = $tags_models->getByArticleId($article['id']);
             }
+
+            $comments_table = new CommentsTable();
+            $comments = $comments_table->getByArticleId($article['id']);
+            foreach ($comments as $key => $comment) {
+                $comments[$key]['creation_date'] = parent::dateFormat($comment['creation_date']);
+            }
         }
+
         // Recuperation des categories en passant par le MODEL
         $categories_models = new CategoriesTable();
         $categories = $categories_models->getByDesc();
 
         $tags = $tags_models->getAll();
-
-        $comments_table = new CommentsTable();
-        $comments = $comments_table->getByArticleId($article['id']);
-        foreach ($comments as $key => $comment) {
-            $comments[$key]['creation_date'] = parent::dateFormat($comment['creation_date']);
-        }
 
         parent::render('/Articles/articles.html.twig', [
             "articles" => $articles,
@@ -183,7 +186,6 @@ class ArticlesController extends Controller
         //PAR DÉFAUT, AFFICHER LES DONNÉES DE L'ARTICLE QUE L'ON SOUHAITE ÉDITER
         $article = $article_table->getById($id);
         $categories = $categories_table->getAll();
-        var_dump($msg);
         parent::render('/Articles/edit.html.twig', [
             "article" => $article,
             "categories" => $categories,

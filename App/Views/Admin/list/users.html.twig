@@ -30,7 +30,7 @@
                                 </td>
                                 <td>{{user.user_group}}</td>
                                 <td>{% if user.status == "1" %}OK{% else %}BAN{% endif %}</td>
-                                <td><a href={{'/users/edit/' ~ user.id}}><button type="button">Edit</button></a></td>
+                                <td><a href={{'/users/edit/' ~ user.id}}><button type="button"><i class="material-icons prefix">edit</i></button></a></td>
                             </tr>
                         {% endfor %}
                         </tbody>

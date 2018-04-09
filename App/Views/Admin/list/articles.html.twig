@@ -28,7 +28,9 @@
                                     <img src="{{ article.path_image }}" alt="" height="100">
                                 </td>
                                 <td>{{article.author}}</td>
-                                <td><a href={{'/articles/edit/' ~ article.id}}><button type="button">Edit</button></a><a id="delete_article_{{ article.id }}" href="/articles/delete/{{ article.id }}"><button type="button">Delete</button></a></td>
+                                <td><a href={{'/articles/edit/' ~ article.id}}><button type="button"><i class="material-icons prefix">edit</i></button></a>
+                                    <a id="delete_article_{{ article.id }}" href="/articles/delete/{{ article.id }}"><button type="button"><i class="material-icons prefix">delete</i></button></a>
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>

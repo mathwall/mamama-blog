@@ -11,3 +11,9 @@ body {
     padding-top: 56px;
   }
 }
+
+button {
+  border : solid #D8D8D8 1px;
+  border-radius: 10px;
+  background-color: #E6E6E6;
+}
