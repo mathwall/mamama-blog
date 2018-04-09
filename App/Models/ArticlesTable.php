@@ -22,7 +22,7 @@ class ArticlesTable extends Table
 
         if(!empty($post["text"])){
             $array[] = strtolower($post["text"]); 
-            $sql .= " (title LIKE '%{$post['text']}%' OR id_writer = (SELECT id FROM users WHERE username LIKE '%{$post['text']}%' AND user_group != 'USER'))";
+            $sql .= " (title LIKE '%{$post['text']}%' OR id_writer IN (SELECT id FROM users WHERE username LIKE '%{$post['text']}%' AND user_group != 'USER') OR content LIKE '%{$post['text']}%')";
         }
         if($post["category"] != "all"){
             if(!empty($post["text"]))
