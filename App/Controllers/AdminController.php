@@ -76,6 +76,14 @@ class AdminController extends Controller{
     }
 
     static public function displayCategoriesAction(Request $request) {
+        $categoriesModel = new CategoriesTable();
+        $errors = null;
+        $categories = $categoriesModel->getByDesc();
+
+        self::render('/Admin/admin_categories.html.twig', [
+            "categories" => $categories,
+            "errors" => $errors,
+        ]);
 
     }
 }

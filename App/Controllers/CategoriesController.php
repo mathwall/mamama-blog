@@ -15,55 +15,97 @@ class CategoriesController extends Controller {
 
         $modifyParameters = [];
         $id = $request->getParams()["id"];
-        $userModel = new UsersTable();
-        $user = $userModel->getById($id);
+        $categoriesModel = new CategoriesTable();
+        $category = $categoriesModel->getById($id);
 
 
         // si l'utilisateur n'existe pas, 404
-        if (!$user) {
+        if (!$category) {
             self::notFoundPageAction($request);
             die();
         }
 
         if($request->getMethod() === "POST") {
+            $id = $request->getParams()["id"];
             $formParams = $request->getMethodParams();
             $formParams = self::secureDataArray($formParams);
-            $password = $formParams["password"];
-            $password = trim($password);
-            $status = isset($formParams["status"]) ? "1" : "0";
+            $name = $formParams["name"];
+            $parent_id = $formParams["parent_id"];
 
-            $fileAvatar = $request->getFiles()["avatar"]["tmp_name"];
-            if($fileAvatar) {
-                $filePath = self::saveUploadFile($fileAvatar, "avatar/", $user["username"]);
-                $modifyParameters["path_avatar"] = $filePath;
-            }
-
-            if(!empty($password)) {
-                $hashed_password = self::hashPassword($password);
-                $modifyParameters["password"] = $hashed_password;
-            }
-
-            $modifyParameters["status"] = $status;
-
-            $modifyParameters["user_group"] = $formParams["user_group"];
-
-            if(count($modifyParameters) > 0) {
-                $userModel->modifyById($id, $modifyParameters);
-                $msg["success"] = "Account Updated";
-                $user = $userModel->getById($id);
+            if (empty($name)) {
+                $msg["alert"] = "You must fill all fields";
             } else {
-                $msg["alert"] = "Nothing to update";
+                $modifyParameters = ["name" => $name];
+                if ($parent_id !== "0") {
+                    $modifyParameters["parent_id"] = intval($parent_id);
+                }
+
+                if ($categoriesModel->modifyById($id, $modifyParameters)) {
+                    $msg["success"] = "Category correctly Updated";
+                    self::redirect([
+                        "request" => $request,
+                        "url" => "/admin/categories/edit/",
+                    ]);
+                } else {
+                    $msg["alert"] = "Problem during the update of the category... Damn!";
+                }
             }
         }
-        parent::render('/Users/edit.html.twig', [
+
+        $categories = $categoriesModel->getByDesc();
+        parent::render('/Categories/edit.html.twig', [
             "msg" => $msg,
-            "user" => $user,
+            "currentCategory" => $category,
+            "categories" => $categories,
         ]);
 
     }
 
+    static public function createAction(Request $request) {
+        $msg = [];
+        $categoriesModel = new CategoriesTable();
+
+        if($request->getMethod() === "POST") {
+            $formParams = $request->getMethodParams();
+            $formParams = self::secureDataArray($formParams);
+            $name = $formParams["name"];
+            $parent_id = $formParams["parent_id"];
+
+            if (empty($name)) {
+                $msg["alert"] = "You must fill all fields";
+            } else {
+                $insertFields = ["name" => $name];
+                if($parent_id !== "0") {
+                    $insertFields["parent_id"] = intval($parent_id);
+                }
+
+                if($categoriesModel->create($insertFields)) {
+                    $msg["success"] = "Category correctly created";
+                    self::redirect([
+                        "request" => $request,
+                        "url" => "/admin/categories/edit",
+                    ]);
+                } else {
+                    // Check si le login ou email existe deja
+                    if($categoriesModel->getByParams(["name" => $name])) {
+                        $msg["alert"] = "Category not available";
+                    } else {
+                        $msg["alert"] = "Problem during the creation of the category... Damn!";
+                    }
+                }
+            }
+        }
+
+
+        $categories = $categoriesModel->getByDesc();
+        parent::render('/Categories/create.html.twig', [
+            "categories" => $categories,
+            "msg" => $msg,
+        ]);
+    }
+
     // Ceci est un controller pour de l'AJAX uniquement
-    public static function deleteAction(Request $request)
+    static public function deleteAction(Request $request)
     {
         if ($request->getMethod() === "DELETE") {
             $data = $request->getMethodParams();
