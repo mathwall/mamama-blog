@@ -12,6 +12,7 @@
                 {% include "/Admin/list/articles.html.twig" %}
                 {% if currentUser.user_group >= constant.group.admin %}
                     {% include "/Admin/list/users.html.twig" %}
+                    {% include "/Admin/list/categories.html.twig" %}
                 {% endif %}
             </div>
         </div>

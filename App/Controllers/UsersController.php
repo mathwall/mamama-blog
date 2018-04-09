@@ -173,6 +173,7 @@ class UsersController extends Controller {
             $formParams = $request->getMethodParams();
             $formParams = self::secureDataArray($formParams);
             $password = $formParams["password"];
+            $password = trim($password);
             $status = isset($formParams["status"]) ? "1" : "0";
 
             $fileAvatar = $request->getFiles()["avatar"]["tmp_name"];

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\ArticlesTable;
+use App\Models\CategoriesTable;
 use App\Models\UsersTable;
 use App\Src\Request;
 use App\Src\User;
@@ -10,24 +11,23 @@ use App\Src\User;
 class AdminController extends Controller{
 
     static public function displayAllAction(){
-
-        $articles_table = new ArticlesTable();
+        $errors = null;
         $user = User::getInstance();
 
-        // il faut penser a set les variables qui vont passer dans twig au tout debut,
-        // par exemple, ici, dans la condition du WRITER, $users n'est pas defini, ce qui creer un probleme a la fin
-        $users = null;
-        $errors = null;
+        $usersModel = new UsersTable();
+        $users = $usersModel->getAll();
+
+        $articlesModel = new ArticlesTable();
+
+        $categoriesModel = new CategoriesTable();
+        $categories = $categoriesModel->getByDesc();
 
         if($user->getRight() == "WRITER"){
             echo "here";
-            $articles = $articles_table->getIsOwn($user->getUsername());
+            $articles = $articlesModel->getIsOwn($user->getUsername());
 
         } else {
-            $articles = $articles_table->getAll();
-            $users_table = new UsersTable();
-            $users = $users_table->getAll();
-
+            $articles = $articlesModel->getAll();
             if(!$users)
                 $errors["users"] = "No users found";
         }
@@ -38,6 +38,7 @@ class AdminController extends Controller{
         self::render('/Admin/admin.html.twig', [
             "articles" => $articles,
             "users" => $users,
+            "categories" => $categories,
             "errors" => $errors,
         ]);
     }
