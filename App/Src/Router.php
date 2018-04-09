@@ -14,9 +14,9 @@ class Router
         "{^articles/(?P<id>\d+)/?$}" => ["ArticlesController::displayAction", UserRight::INVITE],
         "{^articles/?$}" => ["ArticlesController::displayAllAction", UserRight::INVITE],
         "{^admin/?$}" => ["AdminController::displayAllAction", UserRight::WRITER],
-        "{^login/?$}" => ["UsersController::loginAction", UserRight::INVITE],
-        "{^logout/?$}" => ["UsersController::logoutAction", UserRight::INVITE],
-        "{^register/?$}" => ["UsersController::registerAction", UserRight::INVITE],
+        "{^login/?$}" => ["UsersController::loginAction", UserRight::BANNED],
+        "{^logout/?$}" => ["UsersController::logoutAction", UserRight::BANNED],
+        "{^register/?$}" => ["UsersController::registerAction", UserRight::BANNED],
         "{^setting/?$}" => ["UsersController::editAction", UserRight::USER],
         "{^/?$}" => ["ArticlesController::displayAllAction", UserRight::INVITE],
     ];

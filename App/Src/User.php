@@ -93,6 +93,9 @@ class User
 
     public function getRight()
     {
+        if($this->status === '0') {
+            return UserRight::BANNED;
+        }
         $group = $this->user_group;
         if ($group === null) {
             return UserRight::INVITE;

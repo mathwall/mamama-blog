@@ -150,6 +150,10 @@ class UsersController extends Controller {
         ]);
     }
 
+    static public function bannishAction(Request $request) {
+        parent::render('/Users/bannish.html.twig', []);
+    }
+
     static protected function verifyPassword($password, $hash) {
         return password_verify($password, $hash);
     }
