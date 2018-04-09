@@ -8,6 +8,7 @@ use App\Models\TagsTable;
 use App\Models\CommentsTable;
 use App\Src\Request;
 use App\Src\User;
+use App\Src\UserRight;
 
 class ArticlesController extends Controller
 {
@@ -148,23 +149,32 @@ class ArticlesController extends Controller
 
     // Ceci est un controller pour de l'AJAX uniquement
     static public function deleteAction(Request $request) {
-        header("Content-Type: application/json");
-        $id = null;
+
         if($request->getMethod() === "DELETE") {
             $data = $request->getMethodParams();
-            $articleModel = new ArticlesTable();
             $id = $data["id"];
-            if(!empty($id)) {
+            if(empty($id)) {
+                self::sendJsonErrorAndDie("Id is empty!");
+            }
+
+            $articleModel = new ArticlesTable();
+            // On check si l'article existe bien
+            $articleData = $articleModel->getById($id);
+            if(!$articleData) {
+                self::sendJsonErrorAndDie("Article does not exist!");
+            }
+
+            $user = User::getInstance();
+            // On check si l'utilisateur a les droits pour supprimer l'article
+            if($user->getRight() >= UserRight::ADMIN ||
+                ($user->getRight() === UserRight::WRITER && $articleData["id_writer"] === $user->getId())) {
                 $articleModel->deleteById($id);
+                self::sendJsonDataAndDie(["success" => true]);
             } else {
-                header('HTTP/1.1 500');
+                self::sendJsonErrorAndDie("You don't have right to delete this article!");
             }
         } else {
-            header('HTTP/1.1 500');
+            self::sendJsonErrorAndDie("Steven, is it you??");
         }
-
-        echo json_encode([
-            "success" => true,
-        ]);
     }
 }
