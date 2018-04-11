@@ -6,6 +6,7 @@ Marie Parison
 Denis Ma  
 
 **Sujet**
+
 Projet de groupe - introduction au MVC - coder un blog en MVC sans utiliser de framework
 
 **Installation de composer.phar**  
