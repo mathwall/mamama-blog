@@ -9,6 +9,8 @@ Denis Ma
 
 Projet de groupe - formation Code'n Go Epitech - introduction au MVC - coder un blog en MVC sans utiliser de framework
 
+4 jours
+
 **Installation de composer.phar**  
 _Dans le shell_
 
