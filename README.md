@@ -3,10 +3,10 @@
 **Authors:**  
 Mathilde Wallon  
 Marie Parison  
-Denis MA  
+Denis Ma  
 
-A completer un jour
-
+**Sujet**
+Projet de groupe - introduction au MVC - coder un blog en MVC sans utiliser de framework
 
 **Installation de composer.phar**  
 _Dans le shell_
