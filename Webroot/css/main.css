@@ -1,0 +1,19 @@
+* {
+  font-family: 'PT Sans Caption', sans-serif, 'arial', 'Times New Roman';
+}
+
+body {
+  padding-top: 54px;
+}
+
+@media (min-width: 992px) {
+  body {
+    padding-top: 56px;
+  }
+}
+
+button {
+  border : solid #D8D8D8 1px;
+  border-radius: 10px;
+  background-color: #E6E6E6;
+}

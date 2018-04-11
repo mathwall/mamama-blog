@@ -48,6 +48,11 @@ ex: marie/database etc.
 Une fois le feature valide, on merge avec le master et on recree une nouvelle branche.  
 
 
+**Git: ignorer une modification d'un fichier versionne, exemple: la Configuration.php**  
+    
+    git update-index --skip-worktree App/Config/Configuration.php
+
+
 **Git Precaution**  
 - Essayer au maximum de commit uniquement les lignes qui concernent le commit!
 - Nom des commits comprehensible !
@@ -55,3 +60,19 @@ Une fois le feature valide, on merge avec le master et on recree une nouvelle br
 - git add -u   ==> pour indexer les fichiers deja suivis  
 - Toujours faire des "git status" avant de commit ! 
 - On verra pour le reste
+
+
+**Mysql**  
+Probleme:  
+- la base de donnee actuelle, on ne peut pas supprimer un article si il contient des commentaires,  
+Pour y remedier, il faut changer la base de donnee mysql de sorte a creer des relation entre tables avec DELETE CASCADE  
+
+Solution :  
+
+    ALTER TABLE comments DROP FOREIGN KEY comments_ibfk_1;
+    ALTER TABLE comments DROP FOREIGN KEY comments_ibfk_2;
+    ALTER TABLE comments ADD CONSTRAINT comments_ibfk_1 FOREIGN KEY (id_writer) REFERENCES users(id) ON DELETE CASCADE;
+    ALTER TABLE comments ADD CONSTRAINT comments_ibfk_2 FOREIGN KEY (id_article) REFERENCES articles(id) ON DELETE CASCADE;
+
+Ce que ca fait :  
+Si on supprime un article, ou un user, les commentaires associes seront supprimes juste avant.

@@ -1,0 +1,79 @@
+{% extends "base.html.twig" %}
+{% block head %}
+    <title> {{article.title}} </title>
+{% endblock %}
+
+{% block section %}
+{% if no_article %}
+
+<p class="lead">Cet article n'existe pas encore :)</p>
+
+{% else %}
+
+<!-- Page Content -->
+<div class="container">
+
+    <div class="row">
+
+        <!-- Post Content Column -->
+        <div class="col-lg-8">
+
+            <!-- Title -->
+            <h1 class="mt-4">{{ article.title }}</h1>
+
+            <!-- Date/Time -->
+            <p>Posted on {{ article.creation_date }}, by {{ article.author }}</p>
+            <hr>
+
+            {% if article.path_image %}
+                <!-- Preview Image -->
+                <img class="img-fluid rounded w-100" src={{article.path_image}} alt="">
+            {% endif %}
+
+            <hr>
+
+            <!-- Post Content -->
+            <p class="lead">{{ article.content }} </p>
+            <hr>
+
+            <p class="badge badge-primary">{{ article.category }}</p>            
+            {% for tag in tags %}
+            <p class="badge badge-light">{{ tag.name }}</p>
+            {% endfor %}
+            <hr>            
+
+            {% if currentUser.user_group >= constant.group.user %}
+            <!-- Comments Form -->
+            <div class="card my-4">
+                <h5 class="card-header">Leave a Comment:</h5>
+                <div class="card-body">
+                    <form method="post" action = {{ '/articles/' ~ article.id}}>
+                        <div class="form-group">
+                            <textarea class="form-control" rows="3" name='content'></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Single Comment -->
+            {% for comment in comments %}
+            <div class="media mb-4">
+                <img class="d-flex mr-3 rounded-circle" src={% if comment.path_avatar %}{{ comment.path_avatar }}{% else %} '/assets/img/avatar.png' {% endif %} alt="" width="50" height="50">
+                <div class="media-body">
+                    <h5 class="mt-0">{{comment.author}}</h5>
+                    {{comment.content}}
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+{% endif %}
+
+{% endblock %}

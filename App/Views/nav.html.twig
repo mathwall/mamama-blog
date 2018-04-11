@@ -1,0 +1,52 @@
+<!-- Navigation -->
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <ul class="navbar-nav mr-auto">
+            {% if currentUser.isLogged %}
+            <!-- Dropdown -->
+            <li class="nav-item dropdown">
+                <a class="nav-link active dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"> {{ currentUser.username }} </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/setting">Setting</a>
+                    {% if currentUser.user_group >= constant.group.writer %}
+                        <a class="dropdown-item" href="/articles/create">Create article</a>
+                    {% endif %}
+                    {% if currentUser.user_group == constant.group.writer %}
+                        <a class="dropdown-item" href="/articles/edit/">My articles</a>
+                    {% endif %}
+                    {% if currentUser.user_group == constant.group.admin %}
+                        <a class="dropdown-item" href="/admin">Admin</a>
+                        <a class="dropdown-item" href="/admin/articles/edit/">Manage Articles</a>
+                        <a class="dropdown-item" href="/admin/users/edit/">Manage Users</a>
+                        <a class="dropdown-item" href="/admin/comments/edit/">Manage Comments</a>
+                        <a class="dropdown-item" href="/admin/categories/edit/">Manage Categories</a>
+                        <a class="dropdown-item" href="/admin/tags/edit/">Manage Tags</a>
+                    {% endif %}
+                </div>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    <div class="mx-auto order-0">
+        <a class="navbar-brand mx-auto" href="/">Mamama's blog</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+            {% if currentUser.isLogged == true %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Register</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>

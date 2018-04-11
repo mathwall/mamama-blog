@@ -1,0 +1,42 @@
+<div class="panel panel-default">
+    <div class="w-100">
+        <div>
+            <div class="clearfix"></div>
+            <div class="panel-heading">
+                Articles
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>title</th>
+                            <th>content</th>
+                            <th>picture</th>
+                            <th>author</th>
+                            <th>manage</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for article in articles %}
+                            <tr id="tr_article_{{ article.id }}">
+                                <td>{{article.id}}</td>
+                                <td>{{article.title}}</td>
+                                <td>{{article.content}}</td>
+                                <td>
+                                    <img src="{{ article.path_image }}" alt="" height="100">
+                                </td>
+                                <td>{{article.author}}</td>
+                                <td><a href={{'/articles/edit/' ~ article.id}}><button type="button"><i class="material-icons prefix">edit</i></button></a>
+                                    <a id="delete_article_{{ article.id }}" href="/articles/delete/{{ article.id }}"><button type="button"><i class="material-icons prefix">delete</i></button></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

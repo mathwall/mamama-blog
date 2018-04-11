@@ -1,0 +1,66 @@
+{% extends "base.html.twig" %}
+
+{% block head %}
+    <title>Settings </title>
+{% endblock %}
+
+{% block section %}
+    <div class="container">
+        <div class="row justify-content-sm-center">
+            <form enctype="multipart/form-data" class="col-sm-12 col-md-6" method="POST" action="">
+
+                <div class="form-group mt-5">
+                    <label for="nom">Username</label>
+                    <input disabled type="text" class="form-control" id="nom" aria-describedby="emailHelp" placeholder="Username" name="username" value="{{ user.username }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="mail">Email</label>
+                    <input disabled type="email" class="form-control" id="mail" aria-describedby="emailHelp" placeholder="Email" name="email" value="{{ user.email }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="current-password">Current Password</label>
+                    <input required type="password" class="form-control" id="current-password" placeholder="Current Password" name="current-password">
+                </div>
+
+                <div class="form-group">
+                    <label for="new-password">New Password</label>
+                    <input type="password" class="form-control" id="new-password" placeholder="New Password" name="new-password">
+                </div>
+                <div class="form-group">
+                    <label for="password_confirmation">Password Confirmation</label>
+                    <input type="password" class="form-control" id="password_confirmation" placeholder="password confirmation" name="password_confirmation">
+                </div>
+
+                <div class="form-group text-center">
+                    <label for="avatar">
+                        {% if user.path_avatar %}
+                            <img id="avatar-pic" src="{{ user.path_avatar }}" alt="avatar" width="250" height="250"/>
+                        {% else %}
+                            <img id="avatar-pic" src="/assets/img/avatar.png" alt="avatar" alt="avatar" width="250" height="250"/>
+                        {% endif %}
+                    </label>
+                    <input hidden type="file" id="avatar" name="avatar">
+                </div>
+                {% if msg.alert %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ msg.alert }}
+                    </div>
+                {% endif %}
+
+                {% if msg.success %}
+                    <div class="alert alert-success" role="success">
+                        {{ msg.success }}
+                    </div>
+                {% endif %}
+
+                <button type="submit" class="btn btn-primary btn-block mt-3">Update</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="/js/user.edit.js"></script>
+{% endblock %}
